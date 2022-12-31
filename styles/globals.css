@@ -1,3 +1,43 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  h1 {
+    @apply text-2xl font-bold text-title;
+  }
+  h2 {
+    @apply text-sm text-subTitle;
+  }
+  input {
+    @apply rounded-md px-2 py-1;
+    display: block;
+    width: 100%;
+    border: 1px solid #d8d6de;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.45;
+    color: #6e6b7b;
+    appearance: none;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  }
+  input:focus {
+    background-color: #fff;
+    border-color: 1px solid #0d2643;
+    box-shadow: 0 3px 10px 0 rgba(34, 41, 47, 0.1);
+  }
+}
+@layer components {
+  .shadowBtn {
+    box-shadow: 0 8px 25px -8px #0d2643;
+  }
+  .logoTitle {
+    @apply text-2xl font-bold text-primary;
+  }
+  .btn {
+    @apply px-4 py-1 text-lg rounded-md transition hover:shadowBtn;
+  }
+  .btn-primary {
+    @apply bg-primary  text-white dark:bg-secondary dark:text-primary;
+  }
+}
