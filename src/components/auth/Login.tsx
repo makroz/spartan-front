@@ -5,7 +5,7 @@ import useAuth from "../../hooks/useAuth";
 import Input from "../forms/Input";
 
 const Login = () => {
-  const { login } = useAuth();
+  const { user, error, login }: any = useAuth();
   const router = useRouter();
   const [errors, setErrors] = useState({});
   const [formState, setFormState] = useState({
@@ -20,7 +20,7 @@ const Login = () => {
   const validaciones = () => {
     let errors = {};
     if (!formState.email) {
-      errors = { ...errors, title: "Email is required" };
+      errors = { ...errors, email: "Email is required" };
     }
 
     if (!formState.password) {
@@ -38,19 +38,19 @@ const Login = () => {
 
     login(formState).then((data) => {
       console.log("====================================");
-      console.log("login", data);
+      console.log("login", user);
       console.log("====================================");
 
-      if (data.user) {
-        // router.push("/dasboard");
-        return;
+      if (user || data) {
+        router.push("/");
       } else {
-        const err = data.errors;
-        setErrors({ ...errors, ...err });
+        const err = error;
+        setErrors({ ...errors, email: err });
         console.log("====================================");
-        console.log("Error", data.errors);
+        console.log("Error", errors);
         console.log("====================================");
       }
+      return;
     });
   };
 

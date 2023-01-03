@@ -9,10 +9,13 @@ const axiosInterceptors = (instance) => {
       }
 
       if (apiToken) {
-        config.headers = { Authorization: "Bearer " + apiToken };
+        config.headers = {
+          Authorization: "Bearer " + apiToken,
+          accept: "application/json",
+        };
       }
 
-      console.log("Request was sent");
+      // console.log("Request was sent");
       return config;
     },
     (error) => {
@@ -22,12 +25,12 @@ const axiosInterceptors = (instance) => {
 
   instance.interceptors.response.use(
     (response) => {
-      console.log("Response was received");
+      // console.log("Response was received");
       return response;
     },
     (error) => {
       if (error.response.status === 401) {
-        window.location = "/login";
+        //window.location = "/login";
       }
       console.error("error error:", error);
       return Promise.reject(error);

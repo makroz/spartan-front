@@ -6,10 +6,11 @@ import logo from "../public/assets/images/logo/logo.png";
 //Template config options
 const config = {
   app: {
-    appName: "Spartan Affiliate",
-    appDescription: "Spartan Affiliate",
+    appName: "Spartan Affilliate",
+    appDescription: "Spartan Affilliate Manager",
     appLogoImage: logo,
     API_URL: "http://localhost:8000/api",
+    loginRedirect: "/",
   },
   layout: {},
 };

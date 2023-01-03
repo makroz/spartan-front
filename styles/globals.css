@@ -1,7 +1,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 @layer base {
   h1 {
     @apply text-2xl font-bold text-title;
@@ -27,9 +26,13 @@
     box-shadow: 0 3px 10px 0 rgba(34, 41, 47, 0.1);
   }
 }
+
 @layer components {
   .shadowBtn {
     box-shadow: 0 8px 25px -8px #0d2643;
+  }
+  .shadowPanels {
+    box-shadow: 0 4px 24px #22292f1a;
   }
   .logoTitle {
     @apply text-2xl font-bold text-primary;
@@ -38,6 +41,21 @@
     @apply px-4 py-1 text-lg rounded-md transition hover:shadowBtn;
   }
   .btn-primary {
-    @apply bg-primary  text-white dark:bg-secondary dark:text-primary;
+    @apply bg-primary text-white dark:bg-secondary dark:text-primary;
+  }
+  .navbar {
+    @apply flex items-center justify-between  shadowPanels rounded-md my-5 mx-5 px-3 py-4;
+    min-height: 4.45rem;
+    transition: 0.3s ease all, background 0s;
+  }
+  .menuItem {
+    @apply flex items-center p-2 text-base font-normal  rounded-md mx-2 hover:px-4 hover:pr-0;
+  }
+  .menuItemActive {
+    @apply text-primary bg-secondary;
+    box-shadow: 0 0 10px 1px #f4c60cb3;
+  }
+  .menuItemNormal {
+    @apply text-textMenu;
   }
 }
