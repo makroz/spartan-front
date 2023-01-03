@@ -2,7 +2,7 @@ import axios from "axios";
 import { useState, useContext, useMemo, useRef, useEffect } from "react";
 import { AxiosContext } from "../contexts/AxiosInstanceProvider";
 
-const useAxios = (url = null, method = "GET", payload = {}) => {
+const useAxios = (url: any = null, method = "GET", payload = {}) => {
   const [data, setData] = useState<any>(null);
   const [error, setError] = useState("");
   const [loaded, setLoaded] = useState(false);
@@ -19,6 +19,10 @@ const useAxios = (url = null, method = "GET", payload = {}) => {
     _method: any = method,
     payload?: any
   ) => {
+    if (_method == "GET" && payload) {
+      _url = _url + "?" + new URLSearchParams(payload).toString();
+    }
+
     setLoaded(false);
     let data = null;
     try {

@@ -12,6 +12,11 @@ const config = {
     API_URL: "http://localhost:8000/api",
     loginRedirect: "/",
   },
+  auth: {
+    login: "/admin-login",
+    register: "/admin-register",
+    logout: "/admin-logout",
+  },
   layout: {},
 };
 

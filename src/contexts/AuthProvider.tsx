@@ -1,7 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import LoginBasic from "../components/auth/LoginBasic";
 import Spinner from "../components/layouts/Spinner";
-import useAuth from "../hooks/useAuth";
+import config from "../config";
 import useAxios from "../hooks/useAxios";
 
 export const AuthContext = createContext({});
@@ -29,7 +29,7 @@ const AuthProvider = ({ children, auth }: any): any => {
     setUser(null);
 
     const { data, error }: any = await execute(
-      "/admin-login",
+      config.auth.login,
       "POST",
       credentials
     );
@@ -50,7 +50,7 @@ const AuthProvider = ({ children, auth }: any): any => {
     }
   };
   const logout = async () => {
-    const { data, error }: any = await execute("/admin-logout", "POST");
+    const { data, error }: any = await execute(config.auth.logout, "POST");
     localStorage.removeItem("token");
     setUser(null);
 
