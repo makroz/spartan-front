@@ -1,8 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
-import { ChevronRight, ChevronDown, Circle } from "react-feather";
+import React, { useEffect, useState } from "react";
+import {
+  ChevronRight,
+  ChevronDown,
+  Circle,
+  Menu,
+  XCircle,
+} from "react-feather";
 import config from "../../config";
 import useAuth from "../../hooks/useAuth";
 import { mainMenu } from "../../mainMenu";
@@ -13,16 +19,32 @@ const LayoutHorizontal = ({ children }) => {
   const [menu, setMenu]: any = useState(mainMenu);
   const router = useRouter();
   const [dropUser, setDropUser] = useState(false);
+  const [visible, setVisible] = useState(false);
 
+  const onVisible = (e) => {
+    setVisible(!visible);
+  };
   const avatarName = (name: string) => {
     const names = (name + " ").split(" ");
     return (names[0].charAt(0) + names[1].charAt(0)).toUpperCase().trim();
   };
 
+  const handleClickOutside = (e) => {
+    setVisible(false);
+  };
+  useEffect(() => {
+    window.addEventListener("resize", handleClickOutside);
+    return () => {
+      window.removeEventListener("resize", handleClickOutside);
+    };
+  }, []);
+
   if (!user) return children;
   return (
     <div className="grid grid-cols-[300px__1fr] min-h-screen h-full">
-      <div className="bg-primary px-2">
+      <div
+        className={`${visible ? " block" : "md:block hidden"}  bg-primary px-2`}
+      >
         <div className="p-0 flex items-center ">
           <Image
             src={config.app.appLogoImage}
@@ -31,6 +53,11 @@ const LayoutHorizontal = ({ children }) => {
             width={50}
           />
           <div className="logoTitle text-secondary">{config.app.appName}</div>
+          <XCircle
+            onClick={onVisible}
+            size={18}
+            className="text-white absolute top-1 md:hidden"
+          />
         </div>
         <div className="py-4 overflow-y-auto overflow-x-hidden">
           <ul className="space-y-2">
@@ -120,9 +147,15 @@ const LayoutHorizontal = ({ children }) => {
           </ul>
         </div>
       </div>
-      <div className="bg-white flex flex-col h-full">
+      <div
+        className={`${
+          visible ? " col-span-1" : "col-span-2 md:col-span-1"
+        }  bg-white flex flex-col h-full`}
+      >
         <div className="navbar">
-          <div></div>
+          <div>
+            <Menu className="block md:hidden" onClick={onVisible} />
+          </div>
           <div
             className="flex items-center align-middle gap-2"
             onClick={(e) => setDropUser(!dropUser)}
