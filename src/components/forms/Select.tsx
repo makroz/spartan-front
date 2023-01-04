@@ -42,9 +42,11 @@ const Select = (props: any) => {
           </option>
         ))}
       </select>
-      <p className="px-2 mt-0 mb-1 text-xs text-red-600 dark:text-red-500">
-        {props.error[props.name] || null} &nbsp;
-      </p>
+      {props.error && (
+        <p className="px-2 mt-0 mb-1 text-xs text-red-600 dark:text-red-500">
+          {props.error[props.name] || null} &nbsp;
+        </p>
+      )}
     </div>
   );
 };

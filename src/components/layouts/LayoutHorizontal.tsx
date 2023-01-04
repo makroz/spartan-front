@@ -12,6 +12,7 @@ import {
 import config from "../../config";
 import useAuth from "../../hooks/useAuth";
 import { mainMenu } from "../../mainMenu";
+import { initialsName } from "../../utils/string";
 import DropDown from "../DropDown";
 
 const LayoutHorizontal = ({ children }) => {
@@ -24,10 +25,10 @@ const LayoutHorizontal = ({ children }) => {
   const onVisible = (e) => {
     setVisible(!visible);
   };
-  const avatarName = (name: string) => {
-    const names = (name + " ").split(" ");
-    return (names[0].charAt(0) + names[1].charAt(0)).toUpperCase().trim();
-  };
+  // const avatarName = (name: string) => {
+  //   const names = (name + " ").split(" ");
+  //   return (names[0].charAt(0) + names[1].charAt(0)).toUpperCase().trim();
+  // };
 
   const handleClickOutside = (e) => {
     setVisible(false);
@@ -175,7 +176,7 @@ const LayoutHorizontal = ({ children }) => {
               {!user.photoURL && (
                 <div className="inline-flex overflow-hidden relative justify-center items-center w-10 h-10 bg-gray-100 rounded-full dark:bg-gray-600">
                   <span className="font-medium text-gray-600 dark:text-gray-300">
-                    {avatarName(user.name)}
+                    {initialsName(user.name)}
                   </span>
                 </div>
               )}
@@ -207,7 +208,7 @@ const LayoutHorizontal = ({ children }) => {
             </div>
           </div>
         </div>
-        <div className="h-full">{children}</div>
+        <div className="h-full m-8">{children}</div>
       </div>
     </div>
   );
