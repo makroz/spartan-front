@@ -19,11 +19,12 @@ const useAxios = (url: any = null, method = "GET", payload = {}) => {
     _method: any = method,
     payload?: any
   ) => {
+    setError("");
+    setLoaded(false);
     if (_method == "GET" && payload) {
       _url = _url + "?" + new URLSearchParams(payload).toString();
     }
 
-    setLoaded(false);
     let data = null;
     try {
       const response = await instance.request({

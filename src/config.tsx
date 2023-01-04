@@ -10,12 +10,12 @@ const config = {
     appDescription: "Spartan Affilliate Manager",
     appLogoImage: logo,
     API_URL: "http://localhost:8000/api",
-    loginRedirect: "/",
   },
   auth: {
     login: "/admin-login",
     register: "/admin-register",
     logout: "/admin-logout",
+    success: "/",
   },
   layout: {},
 };

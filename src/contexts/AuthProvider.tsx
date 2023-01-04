@@ -7,16 +7,16 @@ import useAxios from "../hooks/useAxios";
 export const AuthContext = createContext({});
 const AuthProvider = ({ children, auth }: any): any => {
   //const data = useAuth();
-  const { data, error, loaded, execute } = useAxios();
+  const { error, loaded, execute } = useAxios();
   const [user, setUser] = useState<any>(null);
 
   const getUser = () => {
     let currentUser = null;
-    if (!user) {
-      console.log("====================================");
-      console.log("No user");
-      console.log("====================================");
-    }
+    // if (!user) {
+    //   console.log("====================================");
+    //   console.log("No user");
+    //   console.log("====================================");
+    // }
     try {
       currentUser = user || JSON.parse(localStorage.getItem("token") + "").user;
     } catch (e) {
@@ -34,7 +34,7 @@ const AuthProvider = ({ children, auth }: any): any => {
       credentials
     );
 
-    if (data?.data?.status === "ok") {
+    if (data?.success && !error) {
       console.log("Loguedo", data);
       setUser(data?.data?.user);
       localStorage.setItem(
@@ -44,24 +44,23 @@ const AuthProvider = ({ children, auth }: any): any => {
       return { user: data?.data?.user };
     } else {
       console.log("====================================");
-      console.log("Error1", data);
+      console.log("Error1", data,error);
       console.log("====================================");
-      return { user, errors: data?.data?.errors };
+      return { user, errors: data?.errors||data?.message||error };
     }
   };
   const logout = async () => {
     const { data, error }: any = await execute(config.auth.logout, "POST");
     localStorage.removeItem("token");
     setUser(null);
-
-    if (data?.data?.status === "ok") {
+    if (data?.success) {
       console.log("Logout", data);
       return;
     } else {
       console.log("====================================");
       console.log("Error1", data);
       console.log("====================================");
-      return { user, errors: data?.data?.errors };
+      return { user, errors: data?.errors||data?.message||error };
     }
   };
 
@@ -69,18 +68,17 @@ const AuthProvider = ({ children, auth }: any): any => {
     getUser();
   }, []);
 
-  if (!loaded) {
-    return <Spinner />;
-  }
   if (auth && !user) {
     return (
       <AuthContext.Provider value={{ user, error, loaded, login, logout }}>
+        {loaded || <Spinner />}
         <LoginBasic />
       </AuthContext.Provider>
     );
   }
   return (
     <AuthContext.Provider value={{ user, error, loaded, login, logout }}>
+      {loaded || <Spinner />}
       {children}
     </AuthContext.Provider>
   );
