@@ -116,13 +116,13 @@ const usersPage = () => {
             value={params.perPage}
             onChange={(e) => setParams({ ...params, perPage: e.target.value })}
             className="w-24"
+            placeholder="Todos"
             options={[
               { value: "10", label: "10" },
               { value: "20", label: "20" },
               { value: "30", label: "30" },
               { value: "40", label: "40" },
               { value: "50", label: "50" },
-              { value: "0", label: "Todos" },
             ]}
           ></Select>
         </div>
@@ -132,3 +132,4 @@ const usersPage = () => {
 };
 
 export default usersPage;
+usersPage.auth = true;
