@@ -6,8 +6,8 @@ import {
   Pagination,
   Table,
 } from "flowbite-react";
-import { useState } from "react";
-import { Delete, Edit, Trash } from "react-feather";
+import { useEffect, useState } from "react";
+import { Edit, Trash } from "react-feather";
 import Select from "../src/components/forms/Select";
 import Spinner from "../src/components/layouts/Spinner";
 import useAxios from "../src/hooks/useAxios";
@@ -26,7 +26,12 @@ const usersPage = () => {
     error,
     loaded,
     execute,
-  } = useAxios("/users", "GET", params);
+    reLoad,
+  } = useAxios("/users", "GET", { ...params, origen: "useAxios" });
+
+  useEffect(() => {
+    reLoad({ ...params, origen: "reLoad" }, true);
+  }, [params]);
 
   const status = {
     A: ["Active", "success"],
@@ -36,8 +41,14 @@ const usersPage = () => {
   };
 
   const onChangePage = (page) => {
+    if (params.page == page) return;
     setParams({ ...params, page });
   };
+  const onChangePerPage = (perPage) => {
+    if (params.perPage == perPage) return;
+    setParams({ ...params, perPage });
+  };
+
   if (!loaded) return <Spinner />;
   return (
     <>
@@ -54,7 +65,7 @@ const usersPage = () => {
             <Table.HeadCell className="w-24">Actions</Table.HeadCell>
           </Table.Head>
           <Table.Body className="divide-y">
-            {users.data.data.map((row) => (
+            {users.data.map((row) => (
               <Table.Row
                 key={row.id}
                 className="bg-white dark:border-gray-700 dark:bg-gray-800"
@@ -109,12 +120,12 @@ const usersPage = () => {
             currentPage={params.page}
             onPageChange={onChangePage}
             showIcons={true}
-            totalPages={users.data.total}
+            totalPages={Math.ceil(users.total / params.perPage)}
           />
           <Select
             name="perPage"
             value={params.perPage}
-            onChange={(e) => setParams({ ...params, perPage: e.target.value })}
+            onChange={(e) => onChangePerPage(e.target.value)}
             className="w-24"
             placeholder="Todos"
             options={[
@@ -126,6 +137,7 @@ const usersPage = () => {
             ]}
           ></Select>
         </div>
+        {JSON.stringify(params)}
       </Card>
     </>
   );

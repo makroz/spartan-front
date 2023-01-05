@@ -6,6 +6,7 @@ const useAxios = (url: any = null, method = "GET", payload = {}) => {
   const [data, setData] = useState<any>(null);
   const [error, setError] = useState("");
   const [loaded, setLoaded] = useState(false);
+  const [countAxios, setCountAxios] = useState(0);
   const contextInstance = useContext(AxiosContext);
   const instance: any = useMemo(() => {
     return contextInstance || axios;
@@ -14,11 +15,16 @@ const useAxios = (url: any = null, method = "GET", payload = {}) => {
   const cancel = () => {
     controllerRef.current.abort();
   };
+  const reLoad = async (_payload: any = {}, prevent = false) => {
+    if (prevent && countAxios == 0) return;
+    await execute(url, method, _payload);
+  };
   const execute = async (
     _url: any = url,
     _method: any = method,
-    payload?: any
+    payload: any = {}
   ) => {
+    console.log("count3:", countAxios);
     setError("");
     setLoaded(false);
     if (_method == "GET" && payload) {
@@ -40,20 +46,26 @@ const useAxios = (url: any = null, method = "GET", payload = {}) => {
       setError(error.message);
     } finally {
       setLoaded(true);
+      console.log("count4:", countAxios);
+      if (payload.origen) console.log("payload.origen", payload.origen);
     }
     return { data, error, loaded };
   };
 
   useEffect(() => {
     if (url) {
+      console.log("count1:", countAxios);
+      setCountAxios(countAxios + 1);
+      console.log("count2:", countAxios);
       execute(url, method, payload);
     } else {
+      setError("");
       setData([]);
       setLoaded(true);
     }
   }, []);
 
-  return { cancel, data, error, loaded, execute };
+  return { countAxios, cancel, data, error, loaded, execute, reLoad };
 };
 
 export default useAxios;
