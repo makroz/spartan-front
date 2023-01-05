@@ -6,17 +6,11 @@ import useAxios from "../hooks/useAxios";
 
 export const AuthContext = createContext({});
 const AuthProvider = ({ children, auth }: any): any => {
-  //const data = useAuth();
   const { error, loaded, execute } = useAxios();
   const [user, setUser] = useState<any>(null);
 
   const getUser = () => {
     let currentUser = null;
-    // if (!user) {
-    //   console.log("====================================");
-    //   console.log("No user");
-    //   console.log("====================================");
-    // }
     try {
       currentUser = user || JSON.parse(localStorage.getItem("token") + "").user;
     } catch (e) {
@@ -68,20 +62,13 @@ const AuthProvider = ({ children, auth }: any): any => {
     getUser();
   }, []);
 
-  if (auth && !user) {
-    return (
-      <AuthContext.Provider value={{ user, error, loaded, login, logout }}>
-        {loaded || <Spinner />}
-        <LoginBasic />
-      </AuthContext.Provider>
-    );
-  }
   return (
     <AuthContext.Provider value={{ user, error, loaded, login, logout }}>
       {loaded || <Spinner />}
-      {children}
+      {(auth && !user)?<LoginBasic />:children}
     </AuthContext.Provider>
   );
 };
 
 export default AuthProvider;
+
