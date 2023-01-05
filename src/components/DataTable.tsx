@@ -25,7 +25,8 @@ const DataTable = ({
         </Table.Head>
 
         <Table.Body className="divide-y">
-          {datas.map((row, index_row) => (
+            {datas.length>0?(
+          datas.map((row, index_row) => (
             <Table.Row
               key={row.id}
               className="bg-white dark:border-gray-700 dark:bg-gray-800"
@@ -58,7 +59,16 @@ const DataTable = ({
                 </a>
               </Table.Cell>
             </Table.Row>
-          ))}
+          ))
+          ):(
+              <Table.Row>
+                  <Table.Cell colSpan={Object.keys(columns).length+2} className="text-center">
+                      Empty Data
+                  </Table.Cell>
+              </Table.Row>  
+          )
+          }
+
         </Table.Body>
       </Table>
       <div className="flex justify-between">
