@@ -1,7 +1,8 @@
 import Head from "next/head";
-import Drawer from "../src/components/layouts/components/Drawer";
+import Image from "next/image";
 import config from "../src/config";
 import useAuth from "../src/hooks/useAuth";
+import fondo from "../public/assets/images/fondo.png";
 
 const Home = () => {
   const { user, logout }: any = useAuth();
@@ -15,7 +16,8 @@ const Home = () => {
       </Head>
 
       <main className="flex w-full flex-1 flex-col items-center justify-center px-20 text-center">
-        Contenido
+        <h1 className="text-6xl font-bold text-primary">Welcome</h1>
+        <Image src={fondo} alt="dashboard" className="m-5" />
       </main>
 
       <footer className="flex h-24 w-full items-center justify-center border-t">
