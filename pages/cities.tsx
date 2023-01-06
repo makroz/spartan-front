@@ -19,8 +19,8 @@ const citiesPage = () => {
   return (
     <>
       <DataCrud
-        title="Country"
-        modulo="countries"
+        title="City"
+        modulo="cities"
         columns={columns}
         formList={fields}
       />
