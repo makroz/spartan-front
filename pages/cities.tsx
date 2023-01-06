@@ -18,7 +18,7 @@ const citiesPage = () => {
   };
 
   if (!loaded) return <Spinner />;
-  const fields = getFields(["id", "name", "state_id", "status"]);
+  const fields = getFields(["id", "name", "state_id"]);
   fields["state_id"].inputType = "select";
   fields["state_id"].options = data.data.map((item) => ({
     value: item.id,
