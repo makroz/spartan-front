@@ -1,36 +1,8 @@
-import { Card } from "flowbite-react";
-import { useEffect, useState } from "react";
-import DataTable from "../src/components/DataTable";
-import Spinner from "../src/components/layouts/Spinner";
-import useAxios from "../src/hooks/useAxios";
+import DataCrud from "../src/components/DataCrud";
+import { getFields } from "../src/utils/dbTools";
 
 const statesPage = () => {
-  const [params, setParams] = useState({
-    page: 1,
-    perPage: 10,
-    sortBy: "id",
-    orderBy: "asc",
-    searchBy: "",
-  });
-  const { data, loaded, reLoad } = useAxios("/states", "GET", {
-    ...params,
-    origen: "useAxios",
-  });
-
-  useEffect(() => {
-    reLoad({ ...params, origen: "reLoad" }, true);
-  }, [params]);
-
-  const onChangePage = (page) => {
-    if (params.page == page) return;
-    setParams({ ...params, page });
-  };
-  const onChangePerPage = (perPage) => {
-    if (params.perPage == perPage) return;
-    setParams({ ...params, perPage });
-  };
-
-  const columns = {
+    const columns = {
     name: {
       header: "State",
       className: "",
@@ -46,27 +18,13 @@ const statesPage = () => {
     },
   };
 
-  //if (!users) return null;
+  const [fields,formState] = getFields(["id", "name", "abv",'country_id', "status"]);
 
   return (
     <>
-      <h1>States List</h1>
-      <Card className="relative">
-        {!loaded && <Spinner />}
-        {loaded && (
-          <DataTable
-            onAction={() => {}}
-            datas={data.data}
-            columns={columns}
-            params={{ ...params, total: data.total }}
-            onChangePage={onChangePage}
-            onChangePerPage={onChangePerPage}
-          />
-        )}
-      </Card>
+      <DataCrud title='State' modulo='states' columns={columns} formList={{fields, formState}} />
     </>
   );
 };
-
 export default statesPage;
 statesPage.auth = true;

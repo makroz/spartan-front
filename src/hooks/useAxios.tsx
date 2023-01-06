@@ -25,7 +25,6 @@ const useAxios = (url: any = null, method = "GET", payload = {}) => {
     payload: any = {},
     Act:any=true
   ) => {
-    console.log("count3:", countAxios);
     setError("");
     setLoaded(false);
     if (_method == "GET" && payload) {
@@ -48,7 +47,6 @@ const useAxios = (url: any = null, method = "GET", payload = {}) => {
       setError(error.message);
     } finally {
       setLoaded(true);
-      console.log("count4:", countAxios);
       if (payload.origen) console.log("payload.origen", payload.origen);
     }
     return { data, error, loaded };
@@ -56,9 +54,7 @@ const useAxios = (url: any = null, method = "GET", payload = {}) => {
 
   useEffect(() => {
     if (url) {
-      console.log("count1:", countAxios);
       setCountAxios(countAxios + 1);
-      console.log("count2:", countAxios);
       execute(url, method, payload);
     } else {
       setError("");
