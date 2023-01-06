@@ -22,7 +22,8 @@ const useAxios = (url: any = null, method = "GET", payload = {}) => {
   const execute = async (
     _url: any = url,
     _method: any = method,
-    payload: any = {}
+    payload: any = {},
+    Act:any=true
   ) => {
     console.log("count3:", countAxios);
     setError("");
@@ -39,8 +40,9 @@ const useAxios = (url: any = null, method = "GET", payload = {}) => {
         method: _method,
         url: _url,
       });
-
-      setData(response.data);
+      if (Act){
+        setData(response.data);
+      }
       data = response.data;
     } catch (error: any) {
       setError(error.message);

@@ -16,7 +16,7 @@ const DataModal = (props) => {
         {props.children}
      </Modal.Body>
     <Modal.Footer>
-      <Button onClick={props.onSave}>
+    <Button onClick={()=>props.onSave('save')}>
         Save
       </Button>
       <Button
