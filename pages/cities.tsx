@@ -2,7 +2,6 @@ import DataCrud from "../src/components/DataCrud";
 import { getFields } from "../src/utils/dbTools";
 
 const citiesPage = () => {
-
   const columns = {
     name: {
       header: "Cities",
@@ -15,11 +14,16 @@ const citiesPage = () => {
     },
   };
 
-  const [fields,formState] = getFields(["id", "name", "code",  "status"]);
+  const fields = getFields(["id", "name", "code", "status"]);
 
   return (
     <>
-      <DataCrud title='Country' modulo='countries' columns={columns} formList={{fields, formState}} />
+      <DataCrud
+        title="Country"
+        modulo="countries"
+        columns={columns}
+        formList={fields}
+      />
     </>
   );
 };
