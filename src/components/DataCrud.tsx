@@ -1,39 +1,38 @@
 import { Card, Spinner } from "flowbite-react";
 import { useEffect, useState } from "react";
 import useAxios from "../hooks/useAxios";
+import { getDefaultFormState } from "../utils/dbTools";
 import { capitalize } from "../utils/string";
 import DataModal from "./DataModal";
 import DataTable from "./DataTable";
 import DbForm from "./forms/DbForm";
 
-  
-
-const DataCrud = ({modulo,columns,formList,title=''}) => {
+const DataCrud = ({ modulo, columns, formList, title = "" }) => {
   const [openModal, setOpenModal] = useState(false);
   const [titleModal, setTitleModal] = useState("");
-  const [formState, setFormState] = useState(formList.formState);
-  const [fields, setFields] = useState(formList.fields);
-  title=capitalize(title||modulo);
-    const [params, setParams] = useState({
+  const [formState, setFormState] = useState(getDefaultFormState(formList));
+  const [action, setAction] = useState("view");
+  title = capitalize(title || modulo);
+  const [params, setParams] = useState({
     page: 1,
     perPage: 10,
     sortBy: "id",
     orderBy: "asc",
     searchBy: "",
   });
-  const {
-    data,
-    error,
-    loaded,
-    execute,
-    reLoad,
-  } = useAxios("/"+modulo, "GET", { ...params, origen: "useAxios" });
+  const { data, error, loaded, execute, reLoad } = useAxios(
+    "/" + modulo,
+    "GET",
+    { ...params, origen: "useAxios" }
+  );
 
   useEffect(() => {
     reLoad({ ...params, origen: "reLoad" }, true);
   }, [params]);
 
-  
+  const handleChangeInput = (e) => {
+    setFormState({ ...formState, [e.target.name]: e.target.value });
+  };
   const onChangePage = (page) => {
     if (params.page == page) return;
     setParams({ ...params, page });
@@ -48,24 +47,29 @@ const DataCrud = ({modulo,columns,formList,title=''}) => {
     onCloseModal();
   };
   const onAdd = () => {
-    setTitleModal("Add "+title);
+    setFormState(getDefaultFormState(formList));
+    setTitleModal("Add " + title);
+    setAction("add");
     setOpenModal(true);
   };
 
   const onEdit = (data) => {
-    console.log(data);
-    setTitleModal("Edit "+title);
+    setFormState(data);
+    setTitleModal("Edit " + title);
+    setAction("edit");
     setOpenModal(true);
   };
 
-  const onShow = (data) => {
-    console.log(data);
-    setTitleModal("View "+title);
+  const onView = (data) => {
+    setFormState(data);
+    setTitleModal("View " + title);
+    setAction("view");
     setOpenModal(true);
   };
 
-  const onDelete = (data) => {
-    setTitleModal("Delete "+title);
+  const onDel = (data) => {
+    setTitleModal("Delete " + title);
+    setAction("del");
     console.log(data);
   };
 
@@ -77,11 +81,11 @@ const DataCrud = ({modulo,columns,formList,title=''}) => {
       case "edit":
         onEdit(data);
         break;
-      case "show":
-        onShow(data);
+      case "view":
+        onView(data);
         break;
-      case "delete":
-        onDelete(data);
+      case "del":
+        onDel(data);
         break;
       default:
         break;
@@ -127,11 +131,15 @@ const DataCrud = ({modulo,columns,formList,title=''}) => {
         onClose={onCloseModal}
         onSave={onSave}
       >
-        <DbForm fields={fields} />
+        <DbForm
+          fields={formList}
+          formState={formState}
+          handleChangeInput={handleChangeInput}
+          action={action}
+        />
       </DataModal>
     </>
   );
 };
 
 export default DataCrud;
-

@@ -1,18 +1,50 @@
 import React from "react";
+import Input from "./Input";
+import Select from "./Select";
 
-const DbForm = ({ fields = [] }: any) => {
+const DbForm = ({
+  fields,
+  formState,
+  errors = {},
+  handleChangeInput,
+  action,
+}: any) => {
   return (
     <div>
-      {Object.keys(fields).map((key) => (
-        <div key={fields[key].id}>
-          <label htmlFor={fields[key].id}>{fields[key].label}</label>
-          <input
-            type={fields[key].inputType}
-            id={fields[key].id}
-            name={fields[key].id}
-          />
-        </div>
-      ))}
+      {Object.keys(fields).map((key) => {
+        const readOnly = action === "view" || fields[key].readOnly;
+        if (fields[key].actions.indexOf(action) < 0) {
+          return null;
+        }
+        if (fields[key].inputType == "select") {
+          return (
+            <div key={key}>
+              <Select
+                label={fields[key].label}
+                name={key}
+                error={errors}
+                readOnly={readOnly}
+                value={formState[key] || ""}
+                onChange={handleChangeInput}
+                options={fields[key].options}
+              ></Select>
+            </div>
+          );
+        }
+        return (
+          <div key={key}>
+            <Input
+              label={fields[key].label}
+              type={fields[key].inputType}
+              name={key}
+              error={errors}
+              readOnly={readOnly}
+              value={formState[key] || ""}
+              onChange={handleChangeInput}
+            ></Input>
+          </div>
+        );
+      })}
     </div>
   );
 };

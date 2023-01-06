@@ -4,7 +4,6 @@ import { getFields } from "../src/utils/dbTools";
 import { initialsName } from "../src/utils/string";
 
 const usersPage = () => {
-
   const status = {
     A: ["Active", "success"],
     I: ["Inactive", "danger"],
@@ -52,12 +51,30 @@ const usersPage = () => {
     },
   };
 
-  const [fields,formState] = getFields(["id", "name", "email", "rol", "status"]);
+  const fields = getFields([
+    "id",
+    "name",
+    "email",
+    "rol",
+    "status",
+    "created_at",
+  ]);
+  console.log("f1", fields);
 
+  fields["created_at"].actions = ["view"];
+  fields["rol"].readOnly = true;
+  fields["rol"].value = "adm";
+
+  console.log("f2", fields);
   return (
-  <>
-    <DataCrud title='user' modulo='users' columns={columns} formList={{fields, formState}} />
-  </>
+    <>
+      <DataCrud
+        title="user"
+        modulo="users"
+        columns={columns}
+        formList={fields}
+      />
+    </>
   );
 };
 
