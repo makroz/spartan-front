@@ -69,7 +69,7 @@ const DataTable = ({
                 ))}
                 <Table.Cell className="flex items-center gap-2">
                   <button
-                    onClick={() => onAction("show", row)}
+                    onClick={() => onAction("view", row)}
                     className="font-medium text-green-600 hover:-translate-y-1 "
                   >
                     <Eye size={18} />
@@ -81,7 +81,7 @@ const DataTable = ({
                     <Edit size={18} />
                   </button>
                   <button
-                    onClick={() => onAction("delete", row)}
+                    onClick={() => onAction("del", row)}
                     className="font-medium text-red-600 hover:-translate-y-1"
                   >
                     <Trash size={18} />

@@ -13,14 +13,16 @@ const Input = (props: any) => {
 
   return (
     <div className={`input ${clase}`}>
-      <label
-        htmlFor={props.name}
-        className={`input-label ${
-          props.required ? "text-black font-bold" : null
-        }`}
-      >
-        {props.label} {props.required ? "*" : null}
-      </label>
+      {props.type === "hidden" ? null : (
+        <label
+          htmlFor={props.name}
+          className={`input-label ${
+            props.required ? "text-black font-bold" : null
+          }`}
+        >
+          {props.label} {props.required ? "*" : null}
+        </label>
+      )}
       <input
         type={props.type || "text"}
         min={props.min}
@@ -37,18 +39,19 @@ const Input = (props: any) => {
         value={props.value}
         autoComplete={props.type === "password" ? "off" : "on"}
       />
-
-      <p
-        className={`px-2 mt-0 mb-1 text-xs ${
-          props.error[props.name]
-            ? "text-red-600"
-            : props.message
-            ? "text-green-600"
-            : ""
-        }`}
-      >
-        {props.error[props.name] || props.message || null} &nbsp;
-      </p>
+      {props.type === "hidden" ? null : (
+        <p
+          className={`px-2 mt-0 mb-1 text-xs ${
+            props.error[props.name]
+              ? "text-red-600"
+              : props.message
+              ? "text-green-600"
+              : ""
+          }`}
+        >
+          {props.error[props.name] || props.message || null} &nbsp;
+        </p>
+      )}
     </div>
   );
 };

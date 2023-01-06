@@ -22,9 +22,9 @@ const useAxios = (url: any = null, method = "GET", payload = {}) => {
   const execute = async (
     _url: any = url,
     _method: any = method,
-    payload: any = {}
+    payload: any = {},
+    Act:any=true
   ) => {
-    console.log("count3:", countAxios);
     setError("");
     setLoaded(false);
     if (_method == "GET" && payload) {
@@ -39,14 +39,14 @@ const useAxios = (url: any = null, method = "GET", payload = {}) => {
         method: _method,
         url: _url,
       });
-
-      setData(response.data);
+      if (Act){
+        setData(response.data);
+      }
       data = response.data;
     } catch (error: any) {
       setError(error.message);
     } finally {
       setLoaded(true);
-      console.log("count4:", countAxios);
       if (payload.origen) console.log("payload.origen", payload.origen);
     }
     return { data, error, loaded };
@@ -54,9 +54,7 @@ const useAxios = (url: any = null, method = "GET", payload = {}) => {
 
   useEffect(() => {
     if (url) {
-      console.log("count1:", countAxios);
       setCountAxios(countAxios + 1);
-      console.log("count2:", countAxios);
       execute(url, method, payload);
     } else {
       setError("");
