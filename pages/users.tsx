@@ -2,6 +2,7 @@ import { Avatar, Badge, Card } from "flowbite-react";
 import { useEffect, useState } from "react";
 import DataModal from "../src/components/DataModal";
 import DataTable from "../src/components/DataTable";
+import DbForm from "../src/components/forms/DbForm";
 import Spinner from "../src/components/layouts/Spinner";
 import useAxios from "../src/hooks/useAxios";
 import { capitalize, initialsName } from "../src/utils/string";
@@ -169,7 +170,6 @@ const usersPage = () => {
   return (
     <>
       <h1>Users List</h1>
-      {JSON.stringify(fields)}
       <Card className="relative">
         {!loaded && <Spinner />}
         {loaded && (
@@ -179,10 +179,7 @@ const usersPage = () => {
                 <div className=""></div>
                 <button
                   className="btn btn-primary flex-shrink w-fit"
-                  // onClick={onAdd}
-                  onClick={(e) =>
-                    getFields(["id", "name", "email", "rol", "status"])
-                  }
+                  onClick={onAdd}
                 >
                   Add User
                 </button>
@@ -204,7 +201,9 @@ const usersPage = () => {
         title={titleModal}
         onClose={onCloseModal}
         onSave={onSave}
-      ></DataModal>
+      >
+        <DbForm fields={fields} />
+      </DataModal>
     </>
   );
 };
