@@ -51,6 +51,7 @@ const citiesPage = () => {
         {!loaded && <Spinner />}
         {data && (
           <DataTable
+            onAction={() => {}}
             datas={data.data}
             columns={columns}
             params={{ ...params, total: data.total }}
