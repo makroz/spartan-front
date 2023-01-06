@@ -55,6 +55,7 @@ const statesPage = () => {
         {!loaded && <Spinner />}
         {loaded && (
           <DataTable
+            onAction={() => {}}
             datas={data.data}
             columns={columns}
             params={{ ...params, total: data.total }}

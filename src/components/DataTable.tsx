@@ -10,7 +10,7 @@ const DataTable = ({
   onChangePage,
   onChangePerPage,
   onAction,
-}) => {
+}): any => {
   const [sel, setSel]: any = useState([]);
   const onSelAll = (e) => {
     if (e.target.checked) {
