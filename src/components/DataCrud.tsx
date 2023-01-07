@@ -9,6 +9,7 @@ import DbForm from "./forms/DbForm";
 
 const DataCrud = ({ modulo, columns, formList, title = "" }) => {
   const [openModal, setOpenModal] = useState(false);
+  const [openDel, setOpenDel] = useState(false);
   const [titleModal, setTitleModal] = useState("");
   const [formState, setFormState]: any = useState(
     getDefaultFormState(formList)
@@ -115,8 +116,11 @@ const DataCrud = ({ modulo, columns, formList, title = "" }) => {
         payLoad = { ...payLoad, [key]: formState[key] };
       }
     });
-    const url = "/" + modulo + (action == "edit" ? "/" + formState["id"] : "");
-    const method = action == "edit" ? "PUT" : "POST";
+    const url = "/" + modulo + (action != "add" ? "/" + formState["id"] : "");
+    let method = action == "edit" ? "PUT" : "POST";
+    if (action == "del") {
+      method = "DELETE";
+    }
     execute(url, method, payLoad, false);
     reLoad({ ...params, origen: "reLoad" });
     onCloseModal();
@@ -145,10 +149,11 @@ const DataCrud = ({ modulo, columns, formList, title = "" }) => {
     setOpenModal(true);
   };
 
-  const onDel = (data) => {
+  const onDel = (data, confirmed = false) => {
+    setFormState(data);
     setTitleModal("Delete " + title);
     setAction("del");
-    console.log(data);
+    setOpenDel(true);
   };
 
   const onAction = (action, data) => {
@@ -172,6 +177,7 @@ const DataCrud = ({ modulo, columns, formList, title = "" }) => {
 
   const onCloseModal = () => {
     setOpenModal(false);
+    setOpenDel(false);
   };
 
   return (
@@ -208,6 +214,7 @@ const DataCrud = ({ modulo, columns, formList, title = "" }) => {
         title={titleModal}
         onClose={onCloseModal}
         onSave={onSave}
+        bottobText={action == "add" ? "Save" : action == "edit" ? "Update" : ""}
       >
         <DbForm
           fields={formList}
@@ -216,6 +223,15 @@ const DataCrud = ({ modulo, columns, formList, title = "" }) => {
           action={action}
           errors={errorsForm}
         />
+      </DataModal>
+      <DataModal
+        open={openDel}
+        title={titleModal}
+        onClose={onCloseModal}
+        onSave={onSave}
+        bottobText="Delete"
+      >
+        <h1>Seguro de eliminar el registro?</h1>
       </DataModal>
     </>
   );
