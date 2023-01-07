@@ -7,12 +7,14 @@ const DataModal = (props) => {
       <Modal.Header>{props.title}</Modal.Header>
       <Modal.Body className="border-y">{props.children}</Modal.Body>
       <Modal.Footer>
-        <button
-          className="btn btn-primary flex-shrink w-fit"
-          onClick={() => props.onSave("save")}
-        >
-          Save
-        </button>
+        {props.bottobText != "" && (
+          <button
+            className="btn btn-primary flex-shrink w-fit"
+            onClick={() => props.onSave("save")}
+          >
+            {props.bottobText}
+          </button>
+        )}
         <button
           className="btn bg-gray-400 text-white  flex-shrink w-fit"
           onClick={props.onClose}
