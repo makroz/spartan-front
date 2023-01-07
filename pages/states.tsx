@@ -21,8 +21,7 @@ const statesPage = () => {
     },
   };
   if (!loaded) return <Spinner />;
-  const fields = getFields(["id", "name", "abv", "country_id"]);
-  fields["country_id"].inputType = "select";
+  const fields = getFields(["id", "name*", "abv*", "country_id*"]);
   fields["country_id"].options = data.data.map((item) => ({
     value: item.id,
     label: item.name + " (" + item.code + ")",

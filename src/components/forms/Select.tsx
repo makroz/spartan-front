@@ -12,7 +12,7 @@ const Select = (props: any) => {
         : "rounded-r-lg"
       : "rounded-lg");
   const lista = [
-    { value: "-1", label: props.placeholder || "Select" },
+    { value: "", label: props.placeholder || "Select" },
     ...props.options,
   ];
 
