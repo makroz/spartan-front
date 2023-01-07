@@ -10,7 +10,10 @@ import DbForm from "./forms/DbForm";
 const DataCrud = ({ modulo, columns, formList, title = "" }) => {
   const [openModal, setOpenModal] = useState(false);
   const [titleModal, setTitleModal] = useState("");
-  const [formState, setFormState] = useState(getDefaultFormState(formList));
+  const [formState, setFormState]: any = useState(
+    getDefaultFormState(formList)
+  );
+  const [errorsForm, setErrorsForm] = useState({});
   const [action, setAction] = useState("view");
   title = capitalize(title || modulo);
   const [params, setParams] = useState({
@@ -30,6 +33,65 @@ const DataCrud = ({ modulo, columns, formList, title = "" }) => {
     reLoad({ ...params, origen: "reLoad" }, true);
   }, [params]);
 
+  const validRule = (value, rules) => {
+    if (!rules) return "";
+    const [rule, params] = (rules + ":").split(":");
+    let param: any = [];
+    if (params && params.length > 0) {
+      param = (params + "" + ",").split(",");
+    }
+
+    switch (rule) {
+      case "required":
+        return !value ? "is Required" : "";
+      case "min":
+        return value.length < param[0] ? "min " + param[0] + " characters" : "";
+      case "max":
+        return value.length > param[0] ? "max " + param[0] + " characters" : "";
+      case "email":
+        return !/\S+@\S+\.\S+/.test(value) ? "is not a valid email" : "";
+      case "number":
+        return !/^\d+$/.test(value) ? "is not a number" : "";
+      case "alpha":
+        return !/^[a-zA-Z]+$/.test(value) ? "is not a valid text" : "";
+      case "greater":
+        return value < param[0] ? "must be greater than " + param[0] : "";
+      case "less":
+        return value > param[0] ? "must be less than " + param[0] : "";
+      case "between":
+        return value < param[0] || value > param[1]
+          ? "must be between " + param[0] + " and " + param[1]
+          : "";
+      case "regex":
+        return !new RegExp(param[0]).test(value) ? "is not a valid value" : "";
+      default:
+        return "";
+    }
+  };
+  const checkRules = () => {
+    let errors = {};
+    for (const key in formList) {
+      const el = formList[key];
+      if (el.actions.includes(action)) {
+        const el = formList[key];
+
+        if (el.required && !formState[key]) {
+          errors = { ...errors, [key]: el.label + " is Required" };
+        }
+        if (el.rules) {
+          const rules = (el.rules + "|").split("|");
+          for (const rule of rules) {
+            const error = validRule(formState[key], rule);
+            if (error) {
+              errors = { ...errors, [key]: el.label + " " + error };
+            }
+          }
+        }
+      }
+    }
+    return errors;
+  };
+
   const handleChangeInput = (e) => {
     setFormState({ ...formState, [e.target.name]: e.target.value });
   };
@@ -44,12 +106,26 @@ const DataCrud = ({ modulo, columns, formList, title = "" }) => {
 
   const onSave = (data) => {
     console.log(data);
+    const errors = checkRules();
+    setErrorsForm(errors);
+    if (Object.keys(errors).length > 0) return;
+    let payLoad = {};
+    Object.keys(formList).map((key) => {
+      if (formList[key].actions.includes(action)) {
+        payLoad = { ...payLoad, [key]: formState[key] };
+      }
+    });
+    const url = "/" + modulo + (action == "edit" ? "/" + formState["id"] : "");
+    const method = action == "edit" ? "PUT" : "POST";
+    execute(url, method, payLoad, false);
+    reLoad({ ...params, origen: "reLoad" });
     onCloseModal();
   };
   const onAdd = () => {
     setFormState(getDefaultFormState(formList));
     setTitleModal("Add " + title);
     setAction("add");
+    setErrorsForm({});
     setOpenModal(true);
   };
 
@@ -57,6 +133,7 @@ const DataCrud = ({ modulo, columns, formList, title = "" }) => {
     setFormState(data);
     setTitleModal("Edit " + title);
     setAction("edit");
+    setErrorsForm({});
     setOpenModal(true);
   };
 
@@ -64,6 +141,7 @@ const DataCrud = ({ modulo, columns, formList, title = "" }) => {
     setFormState(data);
     setTitleModal("View " + title);
     setAction("view");
+    setErrorsForm({});
     setOpenModal(true);
   };
 
@@ -101,7 +179,7 @@ const DataCrud = ({ modulo, columns, formList, title = "" }) => {
       <h1>{title} List</h1>
       <Card className="relative">
         {!loaded && <Spinner />}
-        {loaded && (
+        {data && (
           <>
             <Card>
               <div className="flex justify-between">
@@ -136,6 +214,7 @@ const DataCrud = ({ modulo, columns, formList, title = "" }) => {
           formState={formState}
           handleChangeInput={handleChangeInput}
           action={action}
+          errors={errorsForm}
         />
       </DataModal>
     </>

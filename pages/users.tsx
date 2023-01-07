@@ -53,19 +53,18 @@ const usersPage = () => {
 
   const fields = getFields([
     "id",
-    "name",
-    "email",
+    "name*",
+    "email*",
+    "password*",
     "rol",
     "status",
     "created_at",
   ]);
-  console.log("f1", fields);
 
   fields["created_at"].actions = ["view"];
   fields["rol"].readOnly = true;
   fields["rol"].value = "adm";
 
-  console.log("f2", fields);
   return (
     <>
       <DataCrud

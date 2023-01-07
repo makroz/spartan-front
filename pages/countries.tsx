@@ -2,8 +2,6 @@ import DataCrud from "../src/components/DataCrud";
 import { getFields } from "../src/utils/dbTools";
 
 const countriesPage = () => {
-  const fields = getFields(["id", "name", "code", "status"]);
-
   const columns = {
     name: {
       header: "Country",
@@ -14,6 +12,7 @@ const countriesPage = () => {
       className: "",
     },
   };
+  const fields = getFields(["id", "name*", "code*"]);
 
   return (
     <>
