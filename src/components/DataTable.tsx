@@ -1,4 +1,4 @@
-import { Checkbox, Pagination, Table } from "flowbite-react";
+import { Badge, Checkbox, Pagination, Table } from "flowbite-react";
 import { useState } from "react";
 import { Edit, Eye, Trash } from "react-feather";
 import Select from "./forms/Select";
@@ -28,6 +28,10 @@ const DataTable = ({
     }
   };
 
+  const columnsHeader: any = [];
+  Object.keys(columns).map((key) => {
+    if (columns[key].header) columnsHeader.push(key);
+  });
   return (
     <>
       <Table hoverable={true} striped={true}>
@@ -35,9 +39,11 @@ const DataTable = ({
           <Table.HeadCell className="!p-4 w-12">
             <Checkbox onChange={onSelAll} />
           </Table.HeadCell>
-          {Object.keys(columns).map((key) => (
-            <Table.HeadCell key={`${key}-head`}>
-              {columns[key].header}
+          {columnsHeader.map((key) => (
+            <Table.HeadCell>
+              {columns[key].header === true
+                ? columns[key].label
+                : columns[key].header}
             </Table.HeadCell>
           ))}
           <Table.HeadCell className="w-24">Actions</Table.HeadCell>
@@ -57,14 +63,36 @@ const DataTable = ({
                     checked={sel.includes(row.id)}
                   />
                 </Table.Cell>
-                {Object.keys(columns).map((key) => (
+                {columnsHeader.map((key) => (
                   <Table.Cell
                     key={`${key}-cell`}
                     className={columns[key].className}
                   >
-                    {columns[key].render
-                      ? columns[key].render(row[key], row, key, index_row)
-                      : row[key]}
+                    {columns[key].render ? (
+                      columns[key].render(row[key], row, key, index_row)
+                    ) : (
+                      <>
+                        {columns[key].inputType == "select" &&
+                        columns[key].options ? (
+                          <>
+                            {columns[key].badge ? (
+                              <Badge
+                                color={columns[key].options[row[key]]?.color}
+                                className="rounded-full  justify-center"
+                              >
+                                {columns[key].options[row[key]]?.label}
+                              </Badge>
+                            ) : (
+                              columns[key].options[row[key]][
+                                columns[key].optionLabel
+                              ] || columns[key].options[row[key]]?.label
+                            )}
+                          </>
+                        ) : (
+                          row[key]
+                        )}
+                      </>
+                    )}
                   </Table.Cell>
                 ))}
                 <Table.Cell className="flex items-center gap-2">
@@ -107,6 +135,8 @@ const DataTable = ({
           onPageChange={onChangePage}
           showIcons={true}
           totalPages={Math.ceil(params.total / params.perPage)}
+          previousLabel=""
+          nextLabel=""
         />
         <Select
           name="perPage"

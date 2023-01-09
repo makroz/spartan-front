@@ -9,9 +9,9 @@ import {
   Menu,
   XCircle,
 } from "react-feather";
-import config from "../../config";
+import config from "../../../config/config";
+import { mainMenu } from "../../../config/mainMenu";
 import useAuth from "../../hooks/useAuth";
-import { mainMenu } from "../../mainMenu";
 import { initialsName } from "../../utils/string";
 import DropDown from "../DropDown";
 
