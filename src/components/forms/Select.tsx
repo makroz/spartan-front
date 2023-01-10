@@ -13,10 +13,16 @@ const Select = (props: any) => {
       : "rounded-lg");
   let valueText = "";
   if (props.readOnly) {
-    valueText = props.options.filter
-      ? props.options.filter((o: any) => o.value === props.value)[0]?.label ||
-        ""
-      : props.options[props.value]?.label || "";
+    if (props.options.filter) {
+      valueText = props.options.filter(
+        (o: any) => o[props.optionValue] === props.value
+      )[0];
+      if (valueText) {
+        valueText = valueText[props.optionLabel];
+      }
+    } else {
+      valueText = props.options[props.value]?.label || "";
+    }
   }
   return (
     <div className={`input ${clase}`}>

@@ -93,6 +93,9 @@ const DataCrud = ({ modulo, columns, title = "" }) => {
 
   const handleChangeInput = (e) => {
     setFormState({ ...formState, [e.target.name]: e.target.value });
+    if (columns[e.target.name].onChange) {
+      columns[e.target.name].onChange(e.target.value);
+    }
   };
   const onChangePage = (page) => {
     if (params.page == page) return;
@@ -136,6 +139,11 @@ const DataCrud = ({ modulo, columns, title = "" }) => {
 
   const onEdit = (data) => {
     setFormState(data);
+    Object.keys(columns).map((key) => {
+      if (columns[key].onChange) {
+        columns[key].onChange(data[key]);
+      }
+    });
     setTitleModal("Edit " + title);
     setAction("edit");
     setErrorsForm({});
@@ -144,6 +152,11 @@ const DataCrud = ({ modulo, columns, title = "" }) => {
 
   const onView = (data) => {
     setFormState(data);
+    Object.keys(columns).map((key) => {
+      if (columns[key].onChange) {
+        columns[key].onChange(data[key]);
+      }
+    });
     setTitleModal("View " + title);
     setAction("view");
     setErrorsForm({});
