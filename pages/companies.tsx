@@ -12,15 +12,24 @@ const companiesPage = () => {
   const [city, setCity] = useState("");
   const [formState, setFormState] = useState({});
   const [errorsForm, setErrorsForm] = useState({});
-  const {
-    data: countries,
-    loaded: loadedCountries,
-  }: any = useAxios("/countries", "GET", { perPage: 0, cols: ["id", "name"] });
-  const { data: states, loaded: loadedStates }: any = useAxios(
-    "/states",
-    "GET",
-    { perPage: 0, sortBy: "name", orderBy: "asc", cols: ["id", "name"] }
-  );
+  const { data: plans }: any = useAxios("/plans", "GET", {
+    perPage: 0,
+    sortBy: "name",
+    orderBy: "asc",
+    cols: ["id", "name"],
+  });
+  const { data: countries }: any = useAxios("/countries", "GET", {
+    perPage: 0,
+    sortBy: "name",
+    orderBy: "asc",
+    cols: ["id", "name"],
+  });
+  const { data: states }: any = useAxios("/states", "GET", {
+    perPage: 0,
+    sortBy: "name",
+    orderBy: "asc",
+    cols: ["id", "name"],
+  });
   const { data: cities, loaded, execute }: any = useAxios("/cities", "GET", {
     perPage: 0,
     searchBy: ["state_id", "=", state],
@@ -81,6 +90,7 @@ const companiesPage = () => {
     "status|_h_",
   ]);
   fields["user_id"].value = user?.id;
+  fields["plan_id"].options = plans?.data;
   fields["country_id"].options = countries?.data;
   fields["country_id"].value = 1;
   fields["country_id"].readOnly = true;

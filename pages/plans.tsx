@@ -9,8 +9,8 @@ const plansPage = () => {
     "id",
     "name*|_h_::Plan",
     "description",
-    "price",
-    "durations",
+    "price*|_h_",
+    "duration*|duration (months)|_h_",
     "status|_h_",
   ]);
   return (
