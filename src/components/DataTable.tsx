@@ -83,13 +83,25 @@ const DataTable = ({
                                 {columns[key].options[row[key]]?.label}
                               </Badge>
                             ) : (
-                              columns[key].options[row[key]][
-                                columns[key].optionLabel
-                              ] || columns[key].options[row[key]]?.label
+                              <>
+                                {columns[key].options.find
+                                  ? columns[key].options.find(
+                                      (item) =>
+                                        item[columns[key].optionValue] ==
+                                        row[key]
+                                    )?.[columns[key].optionLabel]
+                                  : columns[key].options[row[key]][
+                                      columns[key].optionLabel
+                                    ] || columns[key].options[row[key]]?.label}
+                              </>
                             )}
                           </>
                         ) : (
-                          row[key]
+                          <>
+                            {columns[key].inputType == "select"
+                              ? "..."
+                              : row[key]}
+                          </>
                         )}
                       </>
                     )}

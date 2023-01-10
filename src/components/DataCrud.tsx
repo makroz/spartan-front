@@ -100,6 +100,7 @@ const DataCrud = ({ modulo, columns, title = "" }) => {
   };
   const onChangePerPage = (perPage) => {
     if (params.perPage == perPage) return;
+    if (!perPage) perPage = -1;
     setParams({ ...params, perPage });
   };
 
@@ -182,20 +183,19 @@ const DataCrud = ({ modulo, columns, title = "" }) => {
     <>
       <h1>{title} List</h1>
       <Card className="relative">
-        {!loaded && <Spinner />}
+        <Card>
+          <div className="flex justify-between">
+            <div className="">{!loaded && <Spinner />}</div>
+            <button
+              className="btn btn-primary flex-shrink w-fit"
+              onClick={onAdd}
+            >
+              Add {title}
+            </button>
+          </div>
+        </Card>
         {data && (
           <>
-            <Card>
-              <div className="flex justify-between">
-                <div className=""></div>
-                <button
-                  className="btn btn-primary flex-shrink w-fit"
-                  onClick={onAdd}
-                >
-                  Add {title}
-                </button>
-              </div>
-            </Card>
             <DataTable
               datas={data.data}
               columns={columns}
