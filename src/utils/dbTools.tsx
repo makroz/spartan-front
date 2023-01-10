@@ -43,7 +43,7 @@ export const getFields = (campos: any = []) => {
           try {
             field[auxA2[0]] = JSON.parse(auxA2[1]);
           } catch (e) {
-            field[auxA2[0]] = auxA2[1];
+            field[auxA2[0]] = auxA2[1].replace("||", "|");
           }
         } else {
           if (item == "_h_") {

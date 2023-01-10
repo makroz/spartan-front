@@ -29,6 +29,11 @@ export const mainMenu = [
     link: "/setting",
     children: [
       {
+        id: "plans",
+        title: "Plans",
+        link: "/plans",
+      },
+      {
         id: "countries",
         title: "Countries",
         link: "/countries",
