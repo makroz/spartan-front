@@ -68,7 +68,7 @@ const companiesPage = () => {
     "title*|_h_::Company",
     "description",
     "address",
-    "office",
+    "office|rules::max,6",
     "country_id*",
     "phone*",
     "licence*|_h_",
