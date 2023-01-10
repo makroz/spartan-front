@@ -29,7 +29,7 @@ const AuthProvider = ({ children, auth }: any): any => {
     );
 
     if (data?.success && !error) {
-      console.log("Loguedo", data);
+      // console.log("Loguedo", data);
       setUser(data?.data?.user);
       localStorage.setItem(
         "token",
@@ -48,7 +48,7 @@ const AuthProvider = ({ children, auth }: any): any => {
     localStorage.removeItem("token");
     setUser(null);
     if (data?.success) {
-      console.log("Logout", data);
+      // console.log("Logout", data);
       return;
     } else {
       console.log("====================================");

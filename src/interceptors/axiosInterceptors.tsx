@@ -1,3 +1,5 @@
+import { useRouter } from "next/router";
+
 const axiosInterceptors = (instance) => {
   instance.interceptors.request.use(
     (config) => {
@@ -30,7 +32,8 @@ const axiosInterceptors = (instance) => {
     },
     (error) => {
       if (error.response.status === 401) {
-        //window.location = "/login";
+        localStorage.removeItem("token");
+        window.location.href = "/login";
       }
       console.error("error error:", error);
       return Promise.reject(error);
