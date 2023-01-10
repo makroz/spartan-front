@@ -94,7 +94,7 @@ const DataCrud = ({ modulo, columns, title = "" }) => {
   const handleChangeInput = (e) => {
     setFormState({ ...formState, [e.target.name]: e.target.value });
     if (columns[e.target.name].onChange) {
-      columns[e.target.name].onChange(e.target.value);
+      columns[e.target.name].onChange(e.target.value, formState, setFormState);
     }
   };
   const onChangePage = (page) => {

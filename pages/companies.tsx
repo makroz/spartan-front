@@ -9,6 +9,7 @@ import { initialsName } from "../src/utils/string";
 const companiesPage = () => {
   const { user }: any = useAuth();
   const [state, setState] = useState("");
+  const [city, setCity] = useState("");
   const { data: countries, loaded: loadedCountries }: any = useAxios(
     "/countries",
     "GET",
@@ -17,7 +18,7 @@ const companiesPage = () => {
   const { data: states, loaded: loadedStates }: any = useAxios(
     "/states",
     "GET",
-    { perPage: 0 }
+    { perPage: 0, sortBy: "name", orderBy: "asc" }
   );
   const {
     data: cities,
@@ -26,8 +27,50 @@ const companiesPage = () => {
   }: any = useAxios("/cities", "GET", {
     perPage: 0,
     searchBy: ["state_id", "=", state],
+    sortBy: "name",
+    orderBy: "asc",
   });
 
+  const onChangeZip = async (zip, formState, setFormState) => {
+    if (zip.length == 5) {
+      const { data, loaded }: any = await execute(
+        "https://us-zipcode.api.smartystreets.com/lookup?key=151874489769002591&zipcode=" +
+          zip,
+        "GET",
+        {},
+        false
+      );
+      if (data) {
+        const state = data[0].zipcodes[0].state;
+        const city = data[0].zipcodes[0].default_city;
+        const state_id = states.data.find((s) => s.name == state).id;
+        setState(state_id);
+        // const { data: cities, loaded }: any = await execute(
+        //   "/cities",
+        //   "GET",
+        //   {
+        //     perPage: 0,
+        //     searchBy: ["state_id", "=", state_id],
+        //     sortBy: "name",
+        //     orderBy: "asc",
+        //   },
+        //   false
+        // );
+        // const city_id = fields["city_id"].options.find(
+        //   (c) => c.name == city
+        // )?.id;
+        setCity(city);
+        //fields["city_id"].options = cities?.data;
+
+        console.log("====================================");
+        console.log("state_id", state_id, "city", city);
+        console.log("====================================");
+        // fields["city_id"].value = city_id;
+
+        setFormState({ ...formState, city_id, state_id });
+      }
+    }
+  };
   const fields = getFields([
     "id",
     "first_name*",
@@ -59,6 +102,7 @@ const companiesPage = () => {
   fields["state_id"].onChange = setState;
   fields["city_id"].options = cities?.data;
   fields["city_id"].render = (value, row, key, index) => row.city.name;
+  fields["zip"].onChange = onChangeZip;
 
   fields["title"].render = (value, row, key, index) => {
     return (
@@ -86,8 +130,15 @@ const companiesPage = () => {
       const { data: cities, loaded }: any = await execute("/cities", "GET", {
         perpAge: 0,
         searchBy: ["state_id", "=", state],
+        sortBy: "name",
+        orderBy: "asc",
       });
       fields["city_id"].options = cities?.data;
+      const city_id = cities.data.find((c) => c.name == city)?.id;
+      console.log("====================================");
+      console.log(city_id, city, cities.data);
+      console.log("====================================");
+      fields["city_id"].value = city_id;
     };
     cargar();
   }, [state]);
