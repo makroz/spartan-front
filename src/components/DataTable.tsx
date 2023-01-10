@@ -14,7 +14,7 @@ const DataTable = ({
   const [sel, setSel]: any = useState([]);
   const onSelAll = (e) => {
     if (e.target.checked) {
-      setSel(datas.map((row) => row.id));
+      setSel(datas.map((row) => row.id + ""));
     } else {
       setSel([]);
     }
@@ -40,7 +40,7 @@ const DataTable = ({
             <Checkbox onChange={onSelAll} />
           </Table.HeadCell>
           {columnsHeader.map((key) => (
-            <Table.HeadCell>
+            <Table.HeadCell key={key}>
               {columns[key].header === true
                 ? columns[key].label
                 : columns[key].header}
@@ -60,7 +60,7 @@ const DataTable = ({
                   <Checkbox
                     value={row.id}
                     onChange={onSel}
-                    checked={sel.includes(row.id)}
+                    checked={sel.includes(row.id + "")}
                   />
                 </Table.Cell>
                 {columnsHeader.map((key) => (
@@ -120,7 +120,7 @@ const DataTable = ({
           ) : (
             <Table.Row>
               <Table.Cell
-                colSpan={Object.keys(columns).length + 2}
+                colSpan={columnsHeader.length + 2}
                 className="text-center"
               >
                 Empty Data
