@@ -1,4 +1,4 @@
-import { Home, Users, Circle, Settings } from "react-feather";
+import { Home, Users, Truck, Settings } from "react-feather";
 export const mainMenu = [
   {
     id: "dasboard",
@@ -9,7 +9,7 @@ export const mainMenu = [
   {
     id: "companies",
     title: "Companies",
-    icon: <Home />,
+    icon: <Truck />,
     link: "/companies",
   },
   {
