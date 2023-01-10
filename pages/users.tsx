@@ -1,9 +1,12 @@
 import { Avatar } from "flowbite-react";
+import { useState } from "react";
 import DataCrud from "../src/components/DataCrud";
 import { getFields } from "../src/utils/dbTools";
 import { initialsName } from "../src/utils/string";
 
 const usersPage = () => {
+  const [formState, setFormState] = useState({});
+  const [errorsForm, setErrorsForm] = useState({});
   const fields = getFields([
     "id",
     "name*|_h_::User",
@@ -37,7 +40,15 @@ const usersPage = () => {
 
   return (
     <>
-      <DataCrud title="User" modulo="users" columns={fields} />
+      <DataCrud
+        title="User"
+        modulo="users"
+        columns={fields}
+        formState={formState}
+        setFormState={setFormState}
+        errorsForm={errorsForm}
+        setErrorsForm={setErrorsForm}
+      />
     </>
   );
 };

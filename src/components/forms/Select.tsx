@@ -53,6 +53,7 @@ const Select = (props: any) => {
           placeholder={props.placeholder || ""}
           required={props.required}
           onChange={props.onChange}
+          onBlur={props.onBlur}
           value={props.value}
         >
           <option value="">{props.placeholder || "Seleccione..."}</option>

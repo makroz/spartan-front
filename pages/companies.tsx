@@ -10,28 +10,27 @@ const companiesPage = () => {
   const { user }: any = useAuth();
   const [state, setState] = useState("");
   const [city, setCity] = useState("");
-  const { data: countries, loaded: loadedCountries }: any = useAxios(
-    "/countries",
-    "GET",
-    { perPage: 0 }
-  );
+  const [formState, setFormState] = useState({});
+  const [errorsForm, setErrorsForm] = useState({});
+  const {
+    data: countries,
+    loaded: loadedCountries,
+  }: any = useAxios("/countries", "GET", { perPage: 0, cols: ["id", "name"] });
   const { data: states, loaded: loadedStates }: any = useAxios(
     "/states",
     "GET",
-    { perPage: 0, sortBy: "name", orderBy: "asc" }
+    { perPage: 0, sortBy: "name", orderBy: "asc", cols: ["id", "name"] }
   );
-  const {
-    data: cities,
-    loaded,
-    execute,
-  }: any = useAxios("/cities", "GET", {
+  const { data: cities, loaded, execute }: any = useAxios("/cities", "GET", {
     perPage: 0,
     searchBy: ["state_id", "=", state],
     sortBy: "name",
     orderBy: "asc",
+    cols: ["id", "name"],
   });
 
-  const onChangeZip = async (zip, formState, setFormState) => {
+  const onBlurZip = async (e) => {
+    const zip = e.target.value;
     if (zip.length == 5) {
       const { data, loaded }: any = await execute(
         "https://us-zipcode.api.smartystreets.com/lookup?key=151874489769002591&zipcode=" +
@@ -40,39 +39,30 @@ const companiesPage = () => {
         {},
         false
       );
-      if (data) {
+      if (data[0].zipcodes) {
         const state = data[0].zipcodes[0].state;
         const city = data[0].zipcodes[0].default_city;
         const state_id = states.data.find((s) => s.name == state).id;
+        setErrorsForm({});
+        if (state_id == state) setState("");
         setState(state_id);
-        // const { data: cities, loaded }: any = await execute(
-        //   "/cities",
-        //   "GET",
-        //   {
-        //     perPage: 0,
-        //     searchBy: ["state_id", "=", state_id],
-        //     sortBy: "name",
-        //     orderBy: "asc",
-        //   },
-        //   false
-        // );
-        // const city_id = fields["city_id"].options.find(
-        //   (c) => c.name == city
-        // )?.id;
         setCity(city);
-        //fields["city_id"].options = cities?.data;
-
-        console.log("====================================");
-        console.log("state_id", state_id, "city", city);
-        console.log("====================================");
-        // fields["city_id"].value = city_id;
-
-        setFormState({ ...formState, city_id, state_id });
+      } else {
+        setErrorsForm({ ...errorsForm, zip: "Zip code not found" });
       }
+    } else {
+      if (zip.length > 0)
+        setErrorsForm({
+          ...errorsForm,
+          zip: "Zip code require 5 numbers only",
+        });
     }
   };
   const fields = getFields([
     "id",
+    "zip*|_h_|rules::number",
+    "state_id*|_h_",
+    "city_id*|_h_",
     "first_name*",
     "last_name*",
     "title*|_h_::Company",
@@ -80,9 +70,6 @@ const companiesPage = () => {
     "address",
     "office",
     "country_id*",
-    "state_id*|_h_",
-    "city_id*|_h_",
-    "zip*|_h_|rules::number",
     "phone*",
     "licence*|_h_",
     "activation_date|Activate",
@@ -102,7 +89,7 @@ const companiesPage = () => {
   fields["state_id"].onChange = setState;
   fields["city_id"].options = cities?.data;
   fields["city_id"].render = (value, row, key, index) => row.city.name;
-  fields["zip"].onChange = onChangeZip;
+  fields["zip"].onBlur = onBlurZip;
 
   fields["title"].render = (value, row, key, index) => {
     return (
@@ -134,18 +121,26 @@ const companiesPage = () => {
         orderBy: "asc",
       });
       fields["city_id"].options = cities?.data;
-      const city_id = cities.data.find((c) => c.name == city)?.id;
-      console.log("====================================");
-      console.log(city_id, city, cities.data);
-      console.log("====================================");
-      fields["city_id"].value = city_id;
+      if (city != "") {
+        const city_id = cities.data.find((c) => c.name == city)?.id;
+        fields["city_id"].value = city_id;
+        setFormState({ ...formState, city_id, state_id: state });
+      }
     };
-    cargar();
+    if (state != "") cargar();
   }, [state]);
 
   return (
     <>
-      <DataCrud title="Company" modulo="companies" columns={fields} />
+      <DataCrud
+        title="Company"
+        modulo="companies"
+        columns={fields}
+        formState={formState}
+        setFormState={setFormState}
+        errorsForm={errorsForm}
+        setErrorsForm={setErrorsForm}
+      />
     </>
   );
 };

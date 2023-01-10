@@ -7,12 +7,21 @@ import DataModal from "./DataModal";
 import DataTable from "./DataTable";
 import DbForm from "./forms/DbForm";
 
-const DataCrud = ({ modulo, columns, title = "" }) => {
+const DataCrud = ({
+  modulo,
+  columns,
+  title = "",
+  formState,
+  setFormState,
+  errorsForm,
+  setErrorsForm,
+}) => {
   const [openModal, setOpenModal] = useState(false);
   const [openDel, setOpenDel] = useState(false);
   const [titleModal, setTitleModal] = useState("");
-  const [formState, setFormState]: any = useState(getDefaultFormState(columns));
-  const [errorsForm, setErrorsForm] = useState({});
+  // const [formState, setFormState]: any = useState(getDefaultFormState(columns));
+
+  const [errorForm, setErrorForm] = useState({});
   const [action, setAction] = useState("view");
   title = capitalize(title || modulo);
   const [params, setParams] = useState({
@@ -29,6 +38,7 @@ const DataCrud = ({ modulo, columns, title = "" }) => {
   );
 
   useEffect(() => {
+    setFormState(getDefaultFormState(columns));
     reLoad({ ...params, origen: "reLoad" }, true);
   }, [params]);
 
@@ -109,8 +119,8 @@ const DataCrud = ({ modulo, columns, title = "" }) => {
 
   const onSave = (data) => {
     console.log(data);
-    const errors = checkRules();
-    setErrorsForm(errors);
+    const errors = { ...checkRules(), ...errorsForm };
+    setErrorForm(errors);
     console.log("error", errors);
     if (Object.keys(errors).length > 0) return;
     console.log("no error");
@@ -134,6 +144,7 @@ const DataCrud = ({ modulo, columns, title = "" }) => {
     setTitleModal("Add " + title);
     setAction("add");
     setErrorsForm({});
+    setErrorForm({});
     setOpenModal(true);
   };
 
@@ -147,6 +158,7 @@ const DataCrud = ({ modulo, columns, title = "" }) => {
     setTitleModal("Edit " + title);
     setAction("edit");
     setErrorsForm({});
+    setErrorForm({});
     setOpenModal(true);
   };
 
@@ -160,6 +172,7 @@ const DataCrud = ({ modulo, columns, title = "" }) => {
     setTitleModal("View " + title);
     setAction("view");
     setErrorsForm({});
+    setErrorForm({});
     setOpenModal(true);
   };
 
@@ -234,7 +247,7 @@ const DataCrud = ({ modulo, columns, title = "" }) => {
           formState={formState}
           handleChangeInput={handleChangeInput}
           action={action}
-          errors={errorsForm}
+          errors={{ ...errorForm, ...errorsForm }}
         />
       </DataModal>
       <DataModal

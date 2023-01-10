@@ -27,6 +27,7 @@ const DbForm = ({
                 required={fields[key].required}
                 value={formState[key]}
                 onChange={handleChangeInput}
+                onBlur={fields[key].onBlur}
                 options={fields[key].options}
                 optionValue={fields[key].optionValue}
                 optionLabel={fields[key].optionLabel}
@@ -45,6 +46,7 @@ const DbForm = ({
               required={fields[key].required}
               value={formState[key]}
               onChange={handleChangeInput}
+              onBlur={fields[key].onBlur}
             ></Input>
           </div>
         );

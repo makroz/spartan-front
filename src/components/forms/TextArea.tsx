@@ -29,6 +29,7 @@ const TextArea = (props: any) => {
         required={props.required}
         disabled={props.disabled}
         onChange={props.onChange}
+        onBlur={props.onBlur}
         value={props.value}
       />
       <p className="px-2 mt-0 mb-1 text-xs text-red-600 dark:text-red-500">

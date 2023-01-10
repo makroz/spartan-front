@@ -36,6 +36,7 @@ const Radio = (props: any) => {
               className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
               checked={props.value === option.value}
               onChange={props.onChange}
+              onBlur={props.onBlur}
               required={props.required}
             />
             <label

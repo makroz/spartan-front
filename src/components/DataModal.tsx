@@ -5,7 +5,7 @@ const DataModal = (props) => {
   return (
     <Modal show={props.open} popup={true} onClose={props.onClose}>
       <Modal.Header>{props.title}</Modal.Header>
-      <Modal.Body className="border-y max-h-[560px] overflow-auto">
+      <Modal.Body className="border-y max-h-[480px] overflow-auto">
         {props.children}
       </Modal.Body>
       <Modal.Footer>
