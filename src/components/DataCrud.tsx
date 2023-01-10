@@ -7,13 +7,11 @@ import DataModal from "./DataModal";
 import DataTable from "./DataTable";
 import DbForm from "./forms/DbForm";
 
-const DataCrud = ({ modulo, columns, formList, title = "" }) => {
+const DataCrud = ({ modulo, columns, title = "" }) => {
   const [openModal, setOpenModal] = useState(false);
   const [openDel, setOpenDel] = useState(false);
   const [titleModal, setTitleModal] = useState("");
-  const [formState, setFormState]: any = useState(
-    getDefaultFormState(formList)
-  );
+  const [formState, setFormState]: any = useState(getDefaultFormState(columns));
   const [errorsForm, setErrorsForm] = useState({});
   const [action, setAction] = useState("view");
   title = capitalize(title || modulo);
@@ -71,10 +69,10 @@ const DataCrud = ({ modulo, columns, formList, title = "" }) => {
   };
   const checkRules = () => {
     let errors = {};
-    for (const key in formList) {
-      const el = formList[key];
+    for (const key in columns) {
+      const el = columns[key];
       if (el.actions.includes(action)) {
-        const el = formList[key];
+        const el = columns[key];
 
         if (el.required && !formState[key]) {
           errors = { ...errors, [key]: el.label + " is Required" };
@@ -102,6 +100,7 @@ const DataCrud = ({ modulo, columns, formList, title = "" }) => {
   };
   const onChangePerPage = (perPage) => {
     if (params.perPage == perPage) return;
+    if (!perPage) perPage = -1;
     setParams({ ...params, perPage });
   };
 
@@ -109,10 +108,12 @@ const DataCrud = ({ modulo, columns, formList, title = "" }) => {
     console.log(data);
     const errors = checkRules();
     setErrorsForm(errors);
+    console.log("error", errors);
     if (Object.keys(errors).length > 0) return;
+    console.log("no error");
     let payLoad = {};
-    Object.keys(formList).map((key) => {
-      if (formList[key].actions.includes(action)) {
+    Object.keys(columns).map((key) => {
+      if (columns[key].actions.includes(action)) {
         payLoad = { ...payLoad, [key]: formState[key] };
       }
     });
@@ -126,7 +127,7 @@ const DataCrud = ({ modulo, columns, formList, title = "" }) => {
     onCloseModal();
   };
   const onAdd = () => {
-    setFormState(getDefaultFormState(formList));
+    setFormState(getDefaultFormState(columns));
     setTitleModal("Add " + title);
     setAction("add");
     setErrorsForm({});
@@ -184,20 +185,19 @@ const DataCrud = ({ modulo, columns, formList, title = "" }) => {
     <>
       <h1>{title} List</h1>
       <Card className="relative">
-        {!loaded && <Spinner />}
+        <Card>
+          <div className="flex justify-between">
+            <div className="">{!loaded && <Spinner />}</div>
+            <button
+              className="btn btn-primary flex-shrink w-fit"
+              onClick={onAdd}
+            >
+              Add {title}
+            </button>
+          </div>
+        </Card>
         {data && (
           <>
-            <Card>
-              <div className="flex justify-between">
-                <div className=""></div>
-                <button
-                  className="btn btn-primary flex-shrink w-fit"
-                  onClick={onAdd}
-                >
-                  Add {title}
-                </button>
-              </div>
-            </Card>
             <DataTable
               datas={data.data}
               columns={columns}
@@ -217,7 +217,7 @@ const DataCrud = ({ modulo, columns, formList, title = "" }) => {
         bottobText={action == "add" ? "Save" : action == "edit" ? "Update" : ""}
       >
         <DbForm
-          fields={formList}
+          fields={columns}
           formState={formState}
           handleChangeInput={handleChangeInput}
           action={action}

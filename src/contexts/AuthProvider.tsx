@@ -1,7 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import LoginBasic from "../components/auth/LoginBasic";
 import Spinner from "../components/layouts/Spinner";
-import config from "../config";
+import config from "../../config/config";
 import useAxios from "../hooks/useAxios";
 
 export const AuthContext = createContext({});
@@ -38,9 +38,9 @@ const AuthProvider = ({ children, auth }: any): any => {
       return { user: data?.data?.user };
     } else {
       console.log("====================================");
-      console.log("Error1", data,error);
+      console.log("Error1", data, error);
       console.log("====================================");
-      return { user, errors: data?.errors||data?.message||error };
+      return { user, errors: data?.errors || data?.message || error };
     }
   };
   const logout = async () => {
@@ -54,7 +54,7 @@ const AuthProvider = ({ children, auth }: any): any => {
       console.log("====================================");
       console.log("Error1", data);
       console.log("====================================");
-      return { user, errors: data?.errors||data?.message||error };
+      return { user, errors: data?.errors || data?.message || error };
     }
   };
 
@@ -65,10 +65,9 @@ const AuthProvider = ({ children, auth }: any): any => {
   return (
     <AuthContext.Provider value={{ user, error, loaded, login, logout }}>
       {loaded || <Spinner />}
-      {(auth && !user)?<LoginBasic />:children}
+      {auth && !user ? <LoginBasic /> : children}
     </AuthContext.Provider>
   );
 };
 
 export default AuthProvider;
-

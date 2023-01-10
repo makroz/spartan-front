@@ -7,6 +7,12 @@ export const mainMenu = [
     link: "/",
   },
   {
+    id: "companies",
+    title: "Companies",
+    icon: <Home />,
+    link: "/companies",
+  },
+  {
     id: "users",
     title: "Users",
     icon: <Users />,

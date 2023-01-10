@@ -1,6 +1,6 @@
 import Head from "next/head";
 import Image from "next/image";
-import config from "../src/config";
+import config from "../config/config";
 import useAuth from "../src/hooks/useAuth";
 import fondo from "../public/assets/images/fondo.png";
 

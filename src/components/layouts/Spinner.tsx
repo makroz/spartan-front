@@ -1,5 +1,5 @@
 import Image from "next/image";
-import config from "../../config";
+import config from "../../../config/config";
 import style from "../../../styles/spinner.module.css";
 const Spinner = () => {
   return (
