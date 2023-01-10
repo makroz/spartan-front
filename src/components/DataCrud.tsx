@@ -108,7 +108,9 @@ const DataCrud = ({ modulo, columns, title = "" }) => {
     console.log(data);
     const errors = checkRules();
     setErrorsForm(errors);
+    console.log("error", errors);
     if (Object.keys(errors).length > 0) return;
+    console.log("no error");
     let payLoad = {};
     Object.keys(columns).map((key) => {
       if (columns[key].actions.includes(action)) {
