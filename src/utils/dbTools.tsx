@@ -66,8 +66,11 @@ export const getFields = (campos: any = []) => {
     if (key == "rol") {
       field.inputType = "select";
       field.options = field.options || {
-        adm: { label: "Administrador" },
         user: { label: "Usuario" },
+        team: { label: "Equipo" },
+        admin: { label: "Administrador" },
+        adm: { label: "Administrador" },
+        owner: { label: "Owner" },
       };
     }
     if (key == "status") {

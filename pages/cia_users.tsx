@@ -1,10 +1,17 @@
 import { Avatar } from "flowbite-react";
 import { useState } from "react";
 import DataCrud from "../src/components/DataCrud";
+import useAxios from "../src/hooks/useAxios";
 import { getFields } from "../src/utils/dbTools";
 import { initialsName } from "../src/utils/string";
 
-const usersPage = () => {
+const ciaUsersPage = () => {
+  const { data, loaded }: any = useAxios("/companies", "GET", {
+    perPage: 0,
+    cols: "id,title",
+    sortBy: "title",
+    sortDir: "asc",
+  });
   const [formState, setFormState] = useState({});
   const [errorsForm, setErrorsForm] = useState({});
   const fields = getFields([
@@ -13,11 +20,15 @@ const usersPage = () => {
     "email*",
     "password*",
     "rol|Role|_h_",
+    "company_id*|_h_",
     "status|_h_",
   ]);
 
   fields["rol"].readOnly = true;
-  fields["rol"].value = "user";
+  fields["rol"].value = "team";
+  fields["company_id"].options = data?.data;
+  fields["company_id"].optionLabel = "title";
+  fields["company_id"].actions = ["add", "view"];
   fields["name"].render = (value, row, key, index) => {
     return (
       <Avatar
@@ -41,8 +52,8 @@ const usersPage = () => {
   return (
     <>
       <DataCrud
-        title="User"
-        modulo="users"
+        title="Users of Cias"
+        modulo="cia_users"
         columns={fields}
         formState={formState}
         setFormState={setFormState}
@@ -53,5 +64,5 @@ const usersPage = () => {
   );
 };
 
-export default usersPage;
-usersPage.auth = true;
+export default ciaUsersPage;
+ciaUsersPage.auth = true;

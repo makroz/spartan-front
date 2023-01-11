@@ -30,11 +30,7 @@ const companiesPage = () => {
     orderBy: "asc",
     cols: ["id", "name"],
   });
-  const {
-    data: cities,
-    loaded,
-    execute,
-  }: any = useAxios("/cities", "GET", {
+  const { data: cities, loaded, execute }: any = useAxios("/cities", "GET", {
     perPage: 0,
     searchBy: ["state_id", "=", state],
     sortBy: "name",
@@ -108,7 +104,6 @@ const companiesPage = () => {
   fields["city_id"].options = cities?.data;
   fields["city_id"].render = (value, row, key, index) => row.city.name;
   fields["zip"].onBlur = onBlurZip;
-
   fields["title"].render = (value, row, key, index) => {
     return (
       <Avatar
