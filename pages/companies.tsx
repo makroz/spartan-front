@@ -69,24 +69,28 @@ const companiesPage = () => {
   };
   const fields = getFields([
     "id",
+    "title*|_h_::Company",
+    "description",
+    "first_name*",
+    "last_name*",
+    "phone*",
+    "country_id*",
     "zip*|_h_|rules::number",
     "state_id*|_h_",
     "city_id*|_h_",
-    "first_name*",
-    "last_name*",
-    "title*|_h_::Company",
-    "description",
     "address",
     "office|rules::max,6",
-    "country_id*",
-    "phone*",
     "licence*|_h_",
     "activation_date|Activate",
     "user_id",
-    "price*|rules::number",
     "plan_id",
+    "price*|rules::number",
     "email*",
     "password*",
+    "link*|rules::noSpace|_h_",
+    "domain",
+    "color_primary|Primary color|_h_|inputType::color|value::#0d2643",
+    "color_secondary|Secondary color|_h_|inputType::color|value::#f4c60c",
     "status|_h_",
   ]);
   fields["user_id"].value = user?.id;
@@ -100,7 +104,6 @@ const companiesPage = () => {
   fields["city_id"].options = cities?.data;
   fields["city_id"].render = (value, row, key, index) => row.city.name;
   fields["zip"].onBlur = onBlurZip;
-
   fields["title"].render = (value, row, key, index) => {
     return (
       <Avatar

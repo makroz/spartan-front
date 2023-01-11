@@ -6,11 +6,25 @@ export const mainMenu = [
     icon: <Home />,
     link: "/",
   },
+
   {
-    id: "companies",
+    id: "m_companies",
     title: "Companies",
     icon: <Truck />,
-    link: "/companies",
+    children: [
+      {
+        id: "companies",
+        title: "Companies",
+        icon: <Truck />,
+        link: "/companies",
+      },
+      {
+        id: "cia_users",
+        title: "Users of Cias",
+        link: "/cia_users",
+        icon: <Users />,
+      },
+    ],
   },
   {
     id: "users",

@@ -63,6 +63,8 @@ const DataCrud = ({
         return !/^\d+$/.test(value) ? "is not a number" : "";
       case "alpha":
         return !/^[a-zA-Z]+$/.test(value) ? "is not a valid text" : "";
+      case "noSpaces":
+        return !/^\S+$/.test(value) ? "is not a valid text" : "";
       case "greater":
         return value < param[0] ? "must be greater than " + param[0] : "";
       case "less":

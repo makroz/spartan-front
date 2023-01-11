@@ -1,8 +1,15 @@
-import React, { useEffect } from "react";
+import { useRef } from "react";
+import { useOnClickOutside } from "../hooks/useOnClickOutside";
 
 const DropDown = (props) => {
+  const container: any = useRef(null);
+  useOnClickOutside(container, () => {
+    props.onOpen(false);
+  });
+
   return (
     <div
+      ref={container}
       id="userDropdown"
       className={
         !props.open

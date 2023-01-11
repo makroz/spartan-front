@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   ChevronRight,
   ChevronDown,
@@ -25,10 +25,6 @@ const LayoutHorizontal = ({ children }) => {
   const onVisible = (e) => {
     setVisible(!visible);
   };
-  // const avatarName = (name: string) => {
-  //   const names = (name + " ").split(" ");
-  //   return (names[0].charAt(0) + names[1].charAt(0)).toUpperCase().trim();
-  // };
 
   const handleClickOutside = (e) => {
     setVisible(false);
@@ -181,7 +177,7 @@ const LayoutHorizontal = ({ children }) => {
                 </div>
               )}
               <span className="top-0 left-7 absolute  w-3.5 h-3.5 bg-green-400 border-2 border-white dark:border-gray-800 rounded-full"></span>
-              <DropDown open={dropUser} onClose={setDropUser}>
+              <DropDown open={dropUser} onOpen={setDropUser}>
                 <ul
                   className="py-1 text-sm text-gray-700 dark:text-gray-200"
                   aria-labelledby="avatarButton"
