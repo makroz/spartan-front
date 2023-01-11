@@ -39,6 +39,7 @@ const Input = (props: any) => {
         value={props.value}
         autoComplete={props.type === "password" ? "off" : "on"}
       />
+
       {props.type === "date" && (
         <svg
           width="21"

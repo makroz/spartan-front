@@ -32,6 +32,52 @@ const DataTable = ({
   Object.keys(columns).map((key) => {
     if (columns[key].header) columnsHeader.push(key);
   });
+
+  const renderCell = (row, key, index_row) => {
+    if (columns[key].render) {
+      return columns[key].render(row[key], row, key, index_row);
+    }
+    switch (columns[key].inputType) {
+      case "select":
+        if (columns[key].options) {
+          if (columns[key].badge) {
+            return (
+              <Badge
+                color={columns[key].options[row[key]]?.color}
+                className="rounded-full  justify-center"
+              >
+                {columns[key].options[row[key]]?.label}
+              </Badge>
+            );
+          }
+          if (columns[key].options.find) {
+            return columns[key].options.find(
+              (item) => item[columns[key].optionValue] == row[key]
+            )?.[columns[key].optionLabel];
+          }
+          return (
+            columns[key].options[row[key]][columns[key].optionLabel] ||
+            columns[key].options[row[key]]?.label
+          );
+        }
+        return "...";
+        break;
+      case "color":
+        return (
+          <div
+            style={{ backgroundColor: row[key], color: "black" }}
+            className="rounded-full  justify-center text-center py-0 px-3"
+          >
+            {row[key]}
+          </div>
+        );
+        break;
+      default:
+        return row[key];
+        break;
+    }
+  };
+
   return (
     <>
       <Table hoverable={true} striped={true}>
@@ -68,43 +114,7 @@ const DataTable = ({
                     key={`${key}-cell`}
                     className={columns[key].className}
                   >
-                    {columns[key].render ? (
-                      columns[key].render(row[key], row, key, index_row)
-                    ) : (
-                      <>
-                        {columns[key].inputType == "select" &&
-                        columns[key].options ? (
-                          <>
-                            {columns[key].badge ? (
-                              <Badge
-                                color={columns[key].options[row[key]]?.color}
-                                className="rounded-full  justify-center"
-                              >
-                                {columns[key].options[row[key]]?.label}
-                              </Badge>
-                            ) : (
-                              <>
-                                {columns[key].options.find
-                                  ? columns[key].options.find(
-                                      (item) =>
-                                        item[columns[key].optionValue] ==
-                                        row[key]
-                                    )?.[columns[key].optionLabel]
-                                  : columns[key].options[row[key]][
-                                      columns[key].optionLabel
-                                    ] || columns[key].options[row[key]]?.label}
-                              </>
-                            )}
-                          </>
-                        ) : (
-                          <>
-                            {columns[key].inputType == "select"
-                              ? "..."
-                              : row[key]}
-                          </>
-                        )}
-                      </>
-                    )}
+                    {renderCell(row, key, index_row)}
                   </Table.Cell>
                 ))}
                 <Table.Cell className="flex items-center gap-2">
