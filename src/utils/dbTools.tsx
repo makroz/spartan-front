@@ -1,4 +1,5 @@
 import { capitalize } from "./string";
+import t from "./traductor";
 
 export const getDefaultFormState = (fields: any = {}) => {
   let result = {};
@@ -9,9 +10,11 @@ export const getDefaultFormState = (fields: any = {}) => {
 };
 
 export const getFields = (campos: any = []) => {
+  //  const { t }: any = useLang();
+
   let result = {};
   let formSchema = {};
-
+  //return { fields: result, formSchema: formSchema };
   campos.map((key) => {
     let auxN: number = -1;
     let auxS: string = "";
@@ -66,18 +69,18 @@ export const getFields = (campos: any = []) => {
     if (key == "rol") {
       field.inputType = "select";
       field.options = field.options || {
-        user: { label: "Usuario" },
-        team: { label: "Equipo" },
-        admin: { label: "Administrador" },
-        adm: { label: "Administrador" },
-        owner: { label: "Owner" },
+        user: { label: t("User") },
+        team: { label: t("Team") },
+        admin: { label: t("Admin") },
+        adm: { label: t("Admin") },
+        owner: { label: t("Owner") },
       };
     }
     if (key == "status") {
       field.inputType = "select";
       field.options = field.options || {
-        A: { label: "Activo" },
-        X: { label: "Inactivo" },
+        A: { label: t("Active") },
+        X: { label: t("Inactive") },
       };
       field.value = field.value || "A";
       field.badge = true;
@@ -113,5 +116,6 @@ export const getFields = (campos: any = []) => {
     result[key] = field;
     formSchema[key] = "";
   });
+  result["_actions"] = { actions: [], inputType: "actions" };
   return result;
 };
