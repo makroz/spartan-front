@@ -1,9 +1,9 @@
 import { Modal } from "flowbite-react";
 import React from "react";
-import useLang from "../hooks/useLang";
+import t from "../utils/traductor";
 
 const DataModal = (props) => {
-  const { t }: any = useLang();
+  //  const { t }: any = useLang();
   return (
     <Modal show={props.open} popup={true} onClose={props.onClose}>
       <Modal.Header>{props.title}</Modal.Header>

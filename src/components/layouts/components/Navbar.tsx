@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { Menu } from "react-feather";
 import useAuth from "../../../hooks/useAuth";
-import useLang from "../../../hooks/useLang";
 import { initialsName } from "../../../utils/string";
+import t from "../../../utils/traductor";
 import DropDown from "../../DropDown";
 
 const Navbar = ({ onVisible = null }: any) => {
-  const { t }: any = useLang();
+  //const { t }: any = useLang();
   const { user, logout }: any = useAuth();
   const [dropUser, setDropUser] = useState(false);
 

@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import idioma from "../components/traductor/en";
+import idioma from "../components/traductor/es";
 
 export const LangContext = createContext({});
 const LangProvider = ({ children }: any): any => {
@@ -34,7 +34,9 @@ const LangProvider = ({ children }: any): any => {
   useEffect(() => {
     if (idioma) setLang(idioma);
   }, [idioma]);
-
+  console.log("====================================");
+  console.log("lang", lang);
+  console.log("====================================");
   if (JSON.stringify(lang) == JSON.stringify({})) return "Loading Languages...";
   return (
     <LangContext.Provider value={{ lang, t }}>{children}</LangContext.Provider>

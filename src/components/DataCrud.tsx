@@ -1,9 +1,9 @@
 import { Card, Spinner } from "flowbite-react";
 import { useEffect, useState } from "react";
 import useAxios from "../hooks/useAxios";
-import useLang from "../hooks/useLang";
 import { getDefaultFormState } from "../utils/dbTools";
 import { capitalize } from "../utils/string";
+import t from "../utils/traductor";
 import DataModal from "./DataModal";
 import DataTable from "./DataTable";
 import DbForm from "./forms/DbForm";
@@ -18,7 +18,7 @@ const DataCrud = ({
   setErrorsForm,
   filter = "",
 }) => {
-  const { t }: any = useLang();
+  //const { t }: any = useLang();
   const [openModal, setOpenModal] = useState(false);
   const [openDel, setOpenDel] = useState(false);
   const [titleModal, setTitleModal] = useState("");

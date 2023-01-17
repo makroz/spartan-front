@@ -41,7 +41,7 @@ const Login = () => {
       // console.log("====================================");
 
       if (user || data?.user) {
-        router.push(config?.auth.success);
+        router.push((config?.app.link || "") + config?.auth.success);
       } else {
         setErrors({ password: error, ...data.errors });
         console.log("====================================");

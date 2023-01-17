@@ -1,7 +1,7 @@
 import { Badge, Checkbox, Pagination, Table } from "flowbite-react";
 import { useState } from "react";
 import { Edit, Eye, Trash } from "react-feather";
-import useLang from "../hooks/useLang";
+import t from "../utils/traductor";
 import Select from "./forms/Select";
 
 const DataTable = ({
@@ -12,7 +12,7 @@ const DataTable = ({
   onChangePerPage,
   onAction,
 }): any => {
-  const { t }: any = useLang();
+  //const { t }: any = useLang();
   const [sel, setSel]: any = useState([]);
   const onSelAll = (e) => {
     if (e.target.checked) {
@@ -80,6 +80,64 @@ const DataTable = ({
     }
   };
 
+  const renderActions = (row, index) => {
+    // if (!columns._actions?.render) {
+    //   return (
+    //     <>
+    //       <button
+    //         onClick={() => onAction("view", row)}
+    //         className="font-medium text-green-600 hover:-translate-y-1 "
+    //       >
+    //         <Eye size={18} />
+    //       </button>
+    //       <button
+    //         onClick={() => onAction("edit", row)}
+    //         className="font-medium text-blue-600 hover:-translate-y-1 "
+    //       >
+    //         <Edit size={18} />
+    //       </button>
+    //       <button
+    //         onClick={() => onAction("del", row)}
+    //         className="font-medium text-red-600 hover:-translate-y-1"
+    //       >
+    //         <Trash size={18} />
+    //       </button>
+    //     </>
+    //   );
+    // }
+    return (
+      <>
+        {(!columns._actions?.render ||
+          columns._actions.render("view", row, index)) && (
+          <button
+            onClick={() => onAction("view", row)}
+            className="font-medium text-green-600 hover:-translate-y-1 "
+          >
+            <Eye size={18} />
+          </button>
+        )}
+        {(!columns._actions?.render ||
+          columns._actions.render("edit", row, index)) && (
+          <button
+            onClick={() => onAction("edit", row)}
+            className="font-medium text-blue-600 hover:-translate-y-1 "
+          >
+            <Edit size={18} />
+          </button>
+        )}
+        {(!columns._actions?.render ||
+          columns._actions.render("del", row, index)) && (
+          <button
+            onClick={() => onAction("del", row)}
+            className="font-medium text-red-600 hover:-translate-y-1"
+          >
+            <Trash size={18} />
+          </button>
+        )}
+      </>
+    );
+  };
+
   return (
     <>
       <Table hoverable={true} striped={true}>
@@ -120,24 +178,7 @@ const DataTable = ({
                   </Table.Cell>
                 ))}
                 <Table.Cell className="flex items-center gap-2">
-                  <button
-                    onClick={() => onAction("view", row)}
-                    className="font-medium text-green-600 hover:-translate-y-1 "
-                  >
-                    <Eye size={18} />
-                  </button>
-                  <button
-                    onClick={() => onAction("edit", row)}
-                    className="font-medium text-blue-600 hover:-translate-y-1 "
-                  >
-                    <Edit size={18} />
-                  </button>
-                  <button
-                    onClick={() => onAction("del", row)}
-                    className="font-medium text-red-600 hover:-translate-y-1"
-                  >
-                    <Trash size={18} />
-                  </button>
+                  {renderActions(row, index_row)}
                 </Table.Cell>
               </Table.Row>
             ))
