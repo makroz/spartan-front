@@ -1,3 +1,4 @@
+import useLang from "../hooks/useLang";
 import { capitalize } from "./string";
 
 export const getDefaultFormState = (fields: any = {}) => {
@@ -9,6 +10,7 @@ export const getDefaultFormState = (fields: any = {}) => {
 };
 
 export const getFields = (campos: any = []) => {
+  const { t }: any = useLang();
   let result = {};
   let formSchema = {};
 
@@ -66,18 +68,18 @@ export const getFields = (campos: any = []) => {
     if (key == "rol") {
       field.inputType = "select";
       field.options = field.options || {
-        user: { label: "Usuario" },
-        team: { label: "Equipo" },
-        admin: { label: "Administrador" },
-        adm: { label: "Administrador" },
-        owner: { label: "Owner" },
+        user: { label: t("User") },
+        team: { label: t("Team") },
+        admin: { label: t("Admin") },
+        adm: { label: t("Admin") },
+        owner: { label: t("Owner") },
       };
     }
     if (key == "status") {
       field.inputType = "select";
       field.options = field.options || {
-        A: { label: "Activo" },
-        X: { label: "Inactivo" },
+        A: { label: t("Active") },
+        X: { label: t("Inactive") },
       };
       field.value = field.value || "A";
       field.badge = true;

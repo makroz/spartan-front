@@ -1,11 +1,10 @@
 import { useRouter } from "next/router";
 import { useState } from "react";
-import config from "../../../config/config";
 import useAuth from "../../hooks/useAuth";
 import Input from "../forms/Input";
 
 const Login = () => {
-  const { user, error, login }: any = useAuth();
+  const { user, error, login, config }: any = useAuth();
   const router = useRouter();
   const [errors, setErrors] = useState({});
   const [formState, setFormState] = useState({
@@ -37,12 +36,12 @@ const Login = () => {
     if (Object.keys(valid).length > 0) return;
 
     login(formState).then((data) => {
-      console.log("====================================");
-      console.log("login", user, "data", data, "error", error);
-      console.log("====================================");
+      // console.log("====================================");
+      // console.log("login", user, "data", data, "error", error);
+      // console.log("====================================");
 
       if (user || data?.user) {
-        router.push(config.auth.success);
+        router.push(config?.auth.success);
       } else {
         setErrors({ password: error, ...data.errors });
         console.log("====================================");
@@ -55,11 +54,11 @@ const Login = () => {
 
   return (
     <form className="p-2">
-      <h1>Welcome to {config.app.appName}!</h1>
+      <h1>Welcome to {config?.app.appName}!</h1>
       <h2>Please sign-in to your account and start the adventure</h2>
       <br />
       <Input
-        label="Email"
+        label={config?.app.loginLabel || "Email"}
         type="text"
         name="email"
         error={errors}

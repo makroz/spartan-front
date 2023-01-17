@@ -1,6 +1,7 @@
 import { Badge, Checkbox, Pagination, Table } from "flowbite-react";
 import { useState } from "react";
 import { Edit, Eye, Trash } from "react-feather";
+import useLang from "../hooks/useLang";
 import Select from "./forms/Select";
 
 const DataTable = ({
@@ -11,6 +12,7 @@ const DataTable = ({
   onChangePerPage,
   onAction,
 }): any => {
+  const { t }: any = useLang();
   const [sel, setSel]: any = useState([]);
   const onSelAll = (e) => {
     if (e.target.checked) {
@@ -92,7 +94,7 @@ const DataTable = ({
                 : columns[key].header}
             </Table.HeadCell>
           ))}
-          <Table.HeadCell className="w-24">Actions</Table.HeadCell>
+          <Table.HeadCell className="w-24">{t("Actions")}</Table.HeadCell>
         </Table.Head>
 
         <Table.Body className="divide-y">
@@ -145,7 +147,7 @@ const DataTable = ({
                 colSpan={columnsHeader.length + 2}
                 className="text-center"
               >
-                Empty Data
+                {t("Empty Data")}
               </Table.Cell>
             </Table.Row>
           )}
@@ -165,7 +167,7 @@ const DataTable = ({
           value={params.perPage}
           onChange={(e) => onChangePerPage(e.target.value)}
           className="w-24"
-          placeholder="Todos"
+          placeholder={t("All")}
           options={[
             { value: "10", label: "10" },
             { value: "20", label: "20" },

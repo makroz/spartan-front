@@ -1,6 +1,7 @@
 import { Card, Spinner } from "flowbite-react";
 import { useEffect, useState } from "react";
 import useAxios from "../hooks/useAxios";
+import useLang from "../hooks/useLang";
 import { getDefaultFormState } from "../utils/dbTools";
 import { capitalize } from "../utils/string";
 import DataModal from "./DataModal";
@@ -15,7 +16,9 @@ const DataCrud = ({
   setFormState,
   errorsForm,
   setErrorsForm,
+  filter = "",
 }) => {
+  const { t }: any = useLang();
   const [openModal, setOpenModal] = useState(false);
   const [openDel, setOpenDel] = useState(false);
   const [titleModal, setTitleModal] = useState("");
@@ -29,7 +32,7 @@ const DataCrud = ({
     perPage: 10,
     sortBy: "id",
     orderBy: "asc",
-    searchBy: "",
+    searchBy: filter,
   });
   const { data, error, loaded, execute, reLoad } = useAxios(
     "/" + modulo,
@@ -52,29 +55,37 @@ const DataCrud = ({
 
     switch (rule) {
       case "required":
-        return !value ? "is Required" : "";
+        return !value ? t("is Required") : "";
+      case "same":
+        return value != formState[param[0]] ? t("must be the same") : "";
       case "min":
-        return value.length < param[0] ? "min " + param[0] + " characters" : "";
+        return value.length < param[0]
+          ? t("min ") + param[0] + t(" characters")
+          : "";
       case "max":
-        return value.length > param[0] ? "max " + param[0] + " characters" : "";
+        return value.length > param[0]
+          ? t("max ") + param[0] + t(" characters")
+          : "";
       case "email":
-        return !/\S+@\S+\.\S+/.test(value) ? "is not a valid email" : "";
+        return !/\S+@\S+\.\S+/.test(value) ? t("is not a valid email") : "";
       case "number":
-        return !/^\d+$/.test(value) ? "is not a number" : "";
+        return !/^[0-9.,-]+$/.test(value) ? t("is not a valid number") : "";
       case "alpha":
-        return !/^[a-zA-Z]+$/.test(value) ? "is not a valid text" : "";
+        return !/^[a-zA-Z]+$/.test(value) ? t("is not a valid text") : "";
       case "noSpaces":
-        return !/^\S+$/.test(value) ? "is not a valid text" : "";
+        return !/^\S+$/.test(value) ? t("is not a valid text") : "";
       case "greater":
-        return value < param[0] ? "must be greater than " + param[0] : "";
+        return value < param[0] ? t("must be greater than ") + param[0] : "";
       case "less":
-        return value > param[0] ? "must be less than " + param[0] : "";
+        return value > param[0] ? t("must be less than ") + param[0] : "";
       case "between":
         return value < param[0] || value > param[1]
-          ? "must be between " + param[0] + " and " + param[1]
+          ? t("must be between ") + param[0] + t(" and ") + param[1]
           : "";
       case "regex":
-        return !new RegExp(param[0]).test(value) ? "is not a valid value" : "";
+        return !new RegExp(param[0]).test(value)
+          ? t("is not a valid value")
+          : "";
       default:
         return "";
     }
@@ -87,7 +98,7 @@ const DataCrud = ({
         const el = columns[key];
 
         if (el.required && !formState[key]) {
-          errors = { ...errors, [key]: el.label + " is Required" };
+          errors = { ...errors, [key]: el.label + t(" is Required") };
         }
         if (el.rules) {
           const rules = (el.rules + "|").split("|");
@@ -143,7 +154,7 @@ const DataCrud = ({
   };
   const onAdd = () => {
     setFormState(getDefaultFormState(columns));
-    setTitleModal("Add " + title);
+    setTitleModal(t("Add ") + title);
     setAction("add");
     setErrorsForm({});
     setErrorForm({});
@@ -157,7 +168,7 @@ const DataCrud = ({
         columns[key].onChange(data[key]);
       }
     });
-    setTitleModal("Edit " + title);
+    setTitleModal(t("Edit ") + title);
     setAction("edit");
     setErrorsForm({});
     setErrorForm({});
@@ -171,7 +182,7 @@ const DataCrud = ({
         columns[key].onChange(data[key]);
       }
     });
-    setTitleModal("View " + title);
+    setTitleModal(t("View ") + title);
     setAction("view");
     setErrorsForm({});
     setErrorForm({});
@@ -180,7 +191,7 @@ const DataCrud = ({
 
   const onDel = (data, confirmed = false) => {
     setFormState(data);
-    setTitleModal("Delete " + title);
+    setTitleModal(t("Delete ") + title);
     setAction("del");
     setOpenDel(true);
   };
@@ -211,7 +222,7 @@ const DataCrud = ({
 
   return (
     <>
-      <h1>{title} List</h1>
+      <h1>{t("List", title)}</h1>
       <Card className="relative">
         <Card>
           <div className="flex justify-between">
@@ -220,7 +231,8 @@ const DataCrud = ({
               className="btn btn-primary flex-shrink w-fit"
               onClick={onAdd}
             >
-              Add {title}
+              {t("Add ")}
+              {title}
             </button>
           </div>
         </Card>
@@ -242,7 +254,9 @@ const DataCrud = ({
         title={titleModal}
         onClose={onCloseModal}
         onSave={onSave}
-        bottobText={action == "add" ? "Save" : action == "edit" ? "Update" : ""}
+        buttonText={
+          action == "add" ? t("Save") : action == "edit" ? t("Update") : ""
+        }
       >
         <DbForm
           fields={columns}
@@ -257,9 +271,9 @@ const DataCrud = ({
         title={titleModal}
         onClose={onCloseModal}
         onSave={onSave}
-        bottobText="Delete"
+        buttonText={t("Delete")}
       >
-        <h1>Seguro de eliminar el registro?</h1>
+        <h1>{t("are you sure you want to delete the record?")}</h1>
       </DataModal>
     </>
   );
