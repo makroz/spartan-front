@@ -1,4 +1,4 @@
-import lang from "../components/traductor/es";
+import lang from "../../config/lang";
 const t = (s = "", p1 = "") => {
   let ini = "";
   let end = "";
