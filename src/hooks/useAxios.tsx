@@ -43,8 +43,8 @@ const useAxios = (url: any = null, method = "GET", payload = {}) => {
         setData(response.data);
       }
       data = response.data;
-    } catch (error) {
-      setError(error.message);
+    } catch (err: any) {
+      setError(err.message);
     } finally {
       setLoaded(true);
       //if (payload.origen) console.log("payload.origen", payload.origen);
