@@ -42,5 +42,7 @@ const idioma: any = {
   "please sign-in to your account and start the adventure":
     "por favor ingrese a su cuenta y comience la aventura",
   "sign in": "ingresar",
+  "only letters and numbers accept, not space or special characters":
+    "solo letras y números, sin espacios ni caracteres especiales",
 };
 export default idioma;

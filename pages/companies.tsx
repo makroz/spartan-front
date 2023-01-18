@@ -30,11 +30,7 @@ const companiesPage = () => {
     orderBy: "asc",
     cols: ["id", "name"],
   });
-  const {
-    data: cities,
-    loaded,
-    execute,
-  }: any = useAxios("/cities", "GET", {
+  const { data: cities, loaded, execute }: any = useAxios("/cities", "GET", {
     perPage: 0,
     searchBy: ["state_id", "=", state],
     sortBy: "name",
@@ -73,7 +69,7 @@ const companiesPage = () => {
   };
   const fields = getFields([
     "id",
-    "title*|_h_::Company",
+    "title*|Name of Company|_h_::Company",
     "description",
     "first_name*",
     "last_name*",
@@ -91,12 +87,16 @@ const companiesPage = () => {
     "price*|rules::number",
     "email*",
     "password*",
-    "link*|rules::noSpace|_h_",
+    "link*|rules::noSpaces",
     "domain",
     "color_primary|Primary color|_h_|inputType::color|value::#0d2643",
     "color_secondary|Secondary color|_h_|inputType::color|value::#f4c60c",
     "status|_h_",
   ]);
+  fields["link"].onBlur = (link) => {
+    if (link.target.value)
+      setFormState({ ...formState, link: link.target.value.toLowerCase() });
+  };
   fields["user_id"].value = user?.id;
   fields["plan_id"].options = plans?.data;
   fields["country_id"].options = countries?.data;
@@ -112,7 +112,7 @@ const companiesPage = () => {
     return (
       <Avatar
         img=""
-        placeholderInitials={initialsName(row.first_name + " " + row.last_name)}
+        placeholderInitials={initialsName(row.title)}
         rounded={true}
         className="flex-shrink-0"
       >
@@ -120,7 +120,15 @@ const companiesPage = () => {
           <div>{row.title}</div>
           <div className="text-sm text-gray-500 dark:text-gray-400">
             {row.first_name} {row.last_name} <br />
-            {row.email}
+            {row.email} <br />
+            Link:{" "}
+            <a
+              target="_blank"
+              href={`https://company.myspartan.com/${row.link}`}
+              className="text-blue-800"
+            >
+              https://company.myspartan.com/{row.link}
+            </a>
           </div>
         </div>
       </Avatar>

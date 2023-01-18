@@ -4,7 +4,7 @@ import t from "./traductor";
 export const getDefaultFormState = (fields: any = {}) => {
   let result = {};
   Object.keys(fields).map((key) => {
-    result[key] = fields[key].value || "";
+    result[key] = fields[key].value === 0 ? 0 : fields[key].value || "";
   });
   return result;
 };
