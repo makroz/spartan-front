@@ -30,11 +30,7 @@ const dealersPage = () => {
     orderBy: "asc",
     cols: ["id", "name"],
   });
-  const {
-    data: cities,
-    loaded,
-    execute,
-  }: any = useAxios("/cities", "GET", {
+  const { data: cities, loaded, execute }: any = useAxios("/cities", "GET", {
     perPage: 0,
     searchBy: ["state_id", "=", state],
     sortBy: "name",
@@ -88,12 +84,16 @@ const dealersPage = () => {
     "activation_date|Activate",
     "email*",
     "password*",
-    "link*|rules::noSpace|_h_",
+    "link*|rules::noSpaces",
     "domain",
     "color_primary|Primary color|_h_|inputType::color|value::#0d2643",
     "color_secondary|Secondary color|_h_|inputType::color|value::#f4c60c",
     "status|_h_",
   ]);
+  fields["link"].onBlur = (link) => {
+    if (link.target.value)
+      setFormState({ ...formState, link: link.target.value.toLowerCase() });
+  };
   fields["country_id"].options = countries?.data;
   fields["country_id"].value = 1;
   fields["country_id"].readOnly = true;
@@ -107,7 +107,7 @@ const dealersPage = () => {
     return (
       <Avatar
         img=""
-        placeholderInitials={initialsName(row.first_name + " " + row.last_name)}
+        placeholderInitials={initialsName(row.title)}
         rounded={true}
         className="flex-shrink-0"
       >
@@ -115,7 +115,15 @@ const dealersPage = () => {
           <div>{row.title}</div>
           <div className="text-sm text-gray-500 dark:text-gray-400">
             {row.first_name} {row.last_name} <br />
-            {row.email}
+            {row.email} <br />
+            Link:{" "}
+            <a
+              target="_blank"
+              href={`https://dealer.myspartan.com/${row.link}`}
+              className="text-blue-800"
+            >
+              https://dealer.myspartan.com/{row.link}
+            </a>
           </div>
         </div>
       </Avatar>

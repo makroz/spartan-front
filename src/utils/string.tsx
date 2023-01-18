@@ -7,3 +7,13 @@ export const capitalize = (s) => {
   if (typeof s !== "string") return "";
   return s.charAt(0).toUpperCase() + s.slice(1);
 };
+
+export const capitalizeWords = (s) => {
+  if (typeof s !== "string") return "";
+  const words = (s.toLowerCase() + " ").split(" ");
+  let result = "";
+  words.map((word) => {
+    result += capitalize(word) + " ";
+  });
+  return result.trim();
+};
