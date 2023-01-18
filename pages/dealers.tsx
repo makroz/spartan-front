@@ -6,17 +6,17 @@ import useAxios from "../src/hooks/useAxios";
 import { getFields } from "../src/utils/dbTools";
 import { initialsName } from "../src/utils/string";
 
-const companiesPage = () => {
+const dealersPage = () => {
   const { user }: any = useAuth();
   const [state, setState] = useState("");
   const [city, setCity] = useState("");
   const [formState, setFormState] = useState({});
   const [errorsForm, setErrorsForm] = useState({});
-  const { data: plans }: any = useAxios("/plans", "GET", {
+  const { data: companies }: any = useAxios("/companies", "GET", {
     perPage: 0,
-    sortBy: "name",
+    sortBy: "title",
     orderBy: "asc",
-    cols: ["id", "name"],
+    cols: ["id", "title"],
   });
   const { data: countries }: any = useAxios("/countries", "GET", {
     perPage: 0,
@@ -73,7 +73,8 @@ const companiesPage = () => {
   };
   const fields = getFields([
     "id",
-    "title*|_h_::Company",
+    "title*|_h_::Dealer",
+    "company_id*|_h_",
     "description",
     "first_name*",
     "last_name*",
@@ -84,11 +85,7 @@ const companiesPage = () => {
     "city_id*|_h_",
     "address",
     "office|rules::max,6",
-    "licence*|_h_",
     "activation_date|Activate",
-    "user_id",
-    "plan_id",
-    "price*|rules::number",
     "email*",
     "password*",
     "link*|rules::noSpace|_h_",
@@ -97,8 +94,6 @@ const companiesPage = () => {
     "color_secondary|Secondary color|_h_|inputType::color|value::#f4c60c",
     "status|_h_",
   ]);
-  fields["user_id"].value = user?.id;
-  fields["plan_id"].options = plans?.data;
   fields["country_id"].options = countries?.data;
   fields["country_id"].value = 1;
   fields["country_id"].readOnly = true;
@@ -128,6 +123,9 @@ const companiesPage = () => {
   };
   fields["title"].className =
     "whitespace-nowrap text-gray-900 dark:text-white  flex items-start";
+  fields["company_id"].options = companies?.data;
+  fields["company_id"].optionLabel = "title";
+  fields["company_id"].readOnly = ["edit"];
 
   useEffect(() => {
     const cargar = async () => {
@@ -150,17 +148,18 @@ const companiesPage = () => {
   return (
     <>
       <DataCrud
-        title="Company"
-        modulo="companies"
+        title="Dealers"
+        modulo="dealers"
         columns={fields}
         formState={formState}
         setFormState={setFormState}
         errorsForm={errorsForm}
         setErrorsForm={setErrorsForm}
+        params={{ relations: ["company", "city"] }}
       />
     </>
   );
 };
 
-export default companiesPage;
-companiesPage.auth = true;
+export default dealersPage;
+dealersPage.auth = true;

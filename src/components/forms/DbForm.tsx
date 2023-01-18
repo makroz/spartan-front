@@ -12,10 +12,14 @@ const DbForm = ({
   return (
     <div>
       {Object.keys(fields).map((key) => {
-        const readOnly = action === "view" || fields[key].readOnly;
-        if (fields[key].actions.indexOf(action) < 0) {
+        if (!fields[key].actions.includes(action)) {
           return null;
         }
+        const readOnly =
+          action === "view" ||
+          (Array.isArray(fields[key].readOnly)
+            ? fields[key].readOnly.includes(action)
+            : fields[key].readOnly);
         if (fields[key].inputType == "select") {
           return (
             <div key={key}>

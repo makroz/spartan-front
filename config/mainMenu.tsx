@@ -27,6 +27,26 @@ export const mainMenu = [
     ],
   },
   {
+    id: "_dealers",
+    title: "Dealers",
+    icon: <Truck />,
+    link: "/dealers",
+    children: [
+      {
+        id: "dealers",
+        title: "Dealers",
+        icon: <Truck />,
+        link: "/dealers",
+      },
+      {
+        id: "dealer_users",
+        title: "Users of Dealers",
+        link: "/dealer_users",
+        icon: <Users />,
+      },
+    ],
+  },
+  {
     id: "users",
     title: "Users",
     icon: <Users />,
