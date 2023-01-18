@@ -12,7 +12,6 @@ const DataTable = ({
   onChangePerPage,
   onAction,
 }): any => {
-  //const { t }: any = useLang();
   const [sel, setSel]: any = useState([]);
   const onSelAll = (e) => {
     if (e.target.checked) {
@@ -21,6 +20,7 @@ const DataTable = ({
       setSel([]);
     }
   };
+
   const onSel = (e) => {
     if (e.target.checked) {
       if (sel.includes(e.target.value)) return;

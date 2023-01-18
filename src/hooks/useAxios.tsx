@@ -23,7 +23,7 @@ const useAxios = (url: any = null, method = "GET", payload = {}) => {
     _url: any = url,
     _method: any = method,
     payload: any = {},
-    Act:any=true
+    Act: any = true
   ) => {
     setError("");
     setLoaded(false);
@@ -39,15 +39,15 @@ const useAxios = (url: any = null, method = "GET", payload = {}) => {
         method: _method,
         url: _url,
       });
-      if (Act){
+      if (Act) {
         setData(response.data);
       }
       data = response.data;
-    } catch (error: any) {
+    } catch (error) {
       setError(error.message);
     } finally {
       setLoaded(true);
-      if (payload.origen) console.log("payload.origen", payload.origen);
+      //if (payload.origen) console.log("payload.origen", payload.origen);
     }
     return { data, error, loaded };
   };

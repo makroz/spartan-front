@@ -16,14 +16,11 @@ const DataCrud = ({
   setFormState,
   errorsForm,
   setErrorsForm,
-  filter = "",
-}) => {
-  //const { t }: any = useLang();
+  param = {},
+}: any) => {
   const [openModal, setOpenModal] = useState(false);
   const [openDel, setOpenDel] = useState(false);
   const [titleModal, setTitleModal] = useState("");
-  // const [formState, setFormState]: any = useState(getDefaultFormState(columns));
-
   const [errorForm, setErrorForm] = useState({});
   const [action, setAction] = useState("view");
   title = capitalize(title || modulo);
@@ -32,7 +29,7 @@ const DataCrud = ({
     perPage: 10,
     sortBy: "id",
     orderBy: "asc",
-    searchBy: filter,
+    ...param,
   });
   const { data, error, loaded, execute, reLoad } = useAxios(
     "/" + modulo,
@@ -131,12 +128,9 @@ const DataCrud = ({
   };
 
   const onSave = (data) => {
-    console.log(data);
     const errors = { ...checkRules(), ...errorsForm };
     setErrorForm(errors);
-    console.log("error", errors);
     if (Object.keys(errors).length > 0) return;
-    console.log("no error");
     let payLoad = {};
     Object.keys(columns).map((key) => {
       if (columns[key].actions.includes(action)) {

@@ -36,5 +36,11 @@ const idioma: any = {
   settings: "configuración",
   "sign out": "cerrar sesión",
   wellcome: "bienvenido",
+  "password is required": "la contraseña es requerida",
+  "email is required": "el email es requerido",
+  "welcome to": "bienvenido a",
+  "please sign-in to your account and start the adventure":
+    "por favor ingrese a su cuenta y comience la aventura",
+  "sign in": "ingresar",
 };
 export default idioma;

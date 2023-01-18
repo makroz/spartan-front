@@ -8,7 +8,7 @@ const config = {
   app: {
     appName: "Spartan Affilliate",
     appDescription: "Spartan Affilliate Manager",
-    appLogoImage: logo,
+    appLogoImage: "/assets/images/logo/logo.png",
     API_URL: "http://localhost:8000/api",
   },
   auth: {

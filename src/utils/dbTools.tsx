@@ -10,11 +10,8 @@ export const getDefaultFormState = (fields: any = {}) => {
 };
 
 export const getFields = (campos: any = []) => {
-  //  const { t }: any = useLang();
-
   let result = {};
   let formSchema = {};
-  //return { fields: result, formSchema: formSchema };
   campos.map((key) => {
     let auxN: number = -1;
     let auxS: string = "";
