@@ -1,7 +1,5 @@
-//import useLang from "../hooks/useLang";
-import lang from "../components/traductor/en";
+import lang from "../../config/lang";
 const t = (s = "", p1 = "") => {
-  //  const { lang }: any = useLang();
   let ini = "";
   let end = "";
   if (s.trim() == "") {

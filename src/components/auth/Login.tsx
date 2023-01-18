@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import { useState } from "react";
 import useAuth from "../../hooks/useAuth";
+import t from "../../utils/traductor";
 import Input from "../forms/Input";
 
 const Login = () => {
@@ -19,11 +20,11 @@ const Login = () => {
   const validaciones = () => {
     let errors = {};
     if (!formState.email) {
-      errors = { ...errors, email: "Email is required" };
+      errors = { ...errors, email: t("Email is required") };
     }
 
     if (!formState.password) {
-      errors = { ...errors, password: "Password is required" };
+      errors = { ...errors, password: t("Password is required") };
     }
     return errors;
   };
@@ -54,8 +55,10 @@ const Login = () => {
 
   return (
     <form className="p-2">
-      <h1>Welcome to {config?.app.appName}!</h1>
-      <h2>Please sign-in to your account and start the adventure</h2>
+      <h1>
+        {t("Welcome to")} {config?.app.appName}!
+      </h1>
+      <h2>{t("Please sign-in to your account and start the adventure")}</h2>
       <br />
       <Input
         label={config?.app.loginLabel || "Email"}
@@ -78,7 +81,7 @@ const Login = () => {
           className="btn btn-primary w-full"
           onClick={(e) => handleSubmit(e)}
         >
-          Sign in
+          {t("Sign in")}
         </button>
       </div>
     </form>

@@ -3,7 +3,6 @@ import React from "react";
 import t from "../utils/traductor";
 
 const DataModal = (props) => {
-  //  const { t }: any = useLang();
   return (
     <Modal show={props.open} popup={true} onClose={props.onClose}>
       <Modal.Header>{props.title}</Modal.Header>
@@ -11,7 +10,7 @@ const DataModal = (props) => {
         {props.children}
       </Modal.Body>
       <Modal.Footer>
-        {props.bottobText != "" && (
+        {props.buttonText != "" && (
           <button
             className="btn btn-primary flex-shrink w-fit"
             onClick={() => props.onSave("save")}
