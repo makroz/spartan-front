@@ -29,12 +29,14 @@ const DataCrud = ({
     perPage: 10,
     sortBy: "id",
     orderBy: "asc",
+    searchBy: "",
+    relations: [],
     ...param,
   });
   const { data, error, loaded, execute, reLoad } = useAxios(
     "/" + modulo,
     "GET",
-    { ...params, origen: "useAxios" }
+    { ...params }
   );
 
   useEffect(() => {
