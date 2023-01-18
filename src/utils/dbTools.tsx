@@ -21,6 +21,7 @@ export const getFields = (campos: any = []) => {
       inputType: "text",
       required: false,
       readOnly: false,
+      sortable: true,
       actions: ["add", "edit", "view"],
     };
     auxN = key.indexOf("*");

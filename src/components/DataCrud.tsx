@@ -17,6 +17,7 @@ const DataCrud = ({
   errorsForm,
   setErrorsForm,
   param = {},
+  onClickRowChildren = null,
 }: any) => {
   const [openModal, setOpenModal] = useState(false);
   const [openDel, setOpenDel] = useState(false);
@@ -119,11 +120,16 @@ const DataCrud = ({
       columns[e.target.name].onChange(e.target.value, formState, setFormState);
     }
   };
+  const onChangeSort = (sortBy, orderBy) => {
+    if (params.sortBy == sortBy && params.orderBy == orderBy) return;
+    setParams({ ...params, sortBy, orderBy });
+  };
   const onChangePage = (page) => {
     if (params.page == page) return;
     setParams({ ...params, page });
   };
-  const onChangePerPage = (perPage) => {
+  const onChangePerPage = (e) => {
+    let perPage = e.target.value;
     if (params.perPage == perPage) return;
     if (!perPage) perPage = -1;
     setParams({ ...params, perPage });
@@ -223,13 +229,15 @@ const DataCrud = ({
         <Card>
           <div className="flex justify-between">
             <div className="">{!loaded && <Spinner />}</div>
-            <button
-              className="btn btn-primary flex-shrink w-fit"
-              onClick={onAdd}
-            >
-              {t("Add ")}
-              {title}
-            </button>
+            {(!columns._actions?.render || columns._actions.render("add")) && (
+              <button
+                className="btn btn-primary flex-shrink w-fit"
+                onClick={onAdd}
+              >
+                {t("Add ")}
+                {title}
+              </button>
+            )}
           </div>
         </Card>
         {data && (
@@ -237,10 +245,12 @@ const DataCrud = ({
             <DataTable
               datas={data.data}
               columns={columns}
+              onClickRowChildren={onClickRowChildren}
               params={{ ...params, total: data.total }}
               onChangePage={onChangePage}
               onChangePerPage={onChangePerPage}
               onAction={onAction}
+              onChangeSort={onChangeSort}
             />
           </>
         )}
