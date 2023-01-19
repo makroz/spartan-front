@@ -5,7 +5,7 @@ import { ChevronDown, ChevronRight, Circle } from "react-feather";
 import { mainMenu } from "../../../../config/mainMenu";
 import ItemMenu from "./ItemMenu";
 
-const MainMenu = ({ config }: any) => {
+const MainMenu = ({ config, onVisible, visible }: any) => {
   const [menu, setMenu]: any = useState(mainMenu);
   const router = useRouter();
   const slug = config?.app?.link || "";
@@ -25,7 +25,7 @@ const MainMenu = ({ config }: any) => {
             <li key={item.id}>
               <div
                 className={
-                  (item.open === true ? "menuItemActive" : "menuItemNormal") +
+                  (item.open === true ? "text-secondary" : "menuItemNormal") +
                   " menuItem"
                 }
                 onClick={(e) => {
@@ -33,19 +33,27 @@ const MainMenu = ({ config }: any) => {
                   setMenu([...menu]);
                 }}
               >
-                {item.icon}
+                <span className="w-4">{item.icon}</span>
                 <span className="flex-1 ml-3 whitespace-nowrap">
                   {item.title}
                 </span>
-                <span className="inline-flex items-center justify-center px-2 ml-3 text-sm font-medium ">
-                  {item.open !== true ? <ChevronRight /> : <ChevronDown />}
+                {/* <span className="flex-1 whitespace-nowrap">{item.title}</span> */}
+                <span className="inline-flex items-center justify-center text-sm font-medium ">
+                  <ChevronRight
+                    className={
+                      (item.open === true
+                        ? "transform rotate-90"
+                        : "transform rotate-0 ") + " transition-all "
+                    }
+                  />
                 </span>
               </div>
               <ul
                 id={`dropdown-${item.id}`}
                 className={
-                  (item.open !== true ? "hidden" : null) +
-                  " py-2 space-y-2 px-4 pr-0"
+                  (item.open !== true || !visible ? "hidden" : null) +
+                  " py-2 space-y-2 px-8 pr-0 md:" +
+                  (item.open === true ? "block" : null)
                 }
               >
                 {item.children.map((item2) => {
@@ -56,6 +64,7 @@ const MainMenu = ({ config }: any) => {
                       slug={slug}
                       config={config}
                       active={active}
+                      onVisible={onVisible}
                     />
                   );
                 })}
@@ -69,33 +78,8 @@ const MainMenu = ({ config }: any) => {
             slug={slug}
             active={active}
             config={config}
+            onVisible={onVisible}
           />
-          //   <li key={item.id}>
-          //     <Link
-          //       href={slug + item.link}
-          //       className={
-          //         (active == item.link ? "menuItemActive" : "menuItemNormal") +
-          //         " menuItem"
-          //       }
-          //       style={
-          //         active == item.link
-          //           ? {
-          //               background: config?.app?.colorSecondary,
-          //             }
-          //           : undefined
-          //       }
-          //     >
-          //       {item.icon}
-          //       <span className="flex-1 ml-3 whitespace-nowrap">
-          //         {item.title}
-          //       </span>
-          //       {item.tag && (
-          //         <span className="inline-flex items-center justify-center px-2 ml-3 text-sm font-medium  text-blue-600 bg-blue-200 rounded-full">
-          //           {item.tag}
-          //         </span>
-          //       )}
-          //     </Link>
-          //   </li>
         );
       })}
     </ul>
