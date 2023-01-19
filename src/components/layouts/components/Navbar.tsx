@@ -10,15 +10,15 @@ const Navbar = ({ onVisible = null }: any) => {
   const [dropUser, setDropUser] = useState(false);
 
   return (
-    <div className="navbar">
+    <div className="navbar z-50">
       <div>
         {onVisible && <Menu className="block md:hidden" onClick={onVisible} />}
       </div>
       <div
-        className="flex items-center align-middle gap-2"
+        className="flex items-center align-middle gap-2 ml-9 overflow-hidden"
         onClick={(e) => setDropUser(!dropUser)}
       >
-        <div>
+        <div className="whitespace-nowrap">
           <div className="text-title">{user.name}</div>
           <div className="text-subTitle text-xs">{t(user.rol)}</div>
         </div>

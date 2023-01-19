@@ -237,7 +237,7 @@ const DataTable = ({
           )}
         </Table.Body>
       </Table>
-      <div className="flex justify-between">
+      <div className="flex justify-between flex-wrap">
         {onChangePage && (
           <Pagination
             currentPage={params.page}
