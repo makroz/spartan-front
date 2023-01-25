@@ -43,6 +43,14 @@ const AuthProvider = ({ children, auth, guard = null }: any): any => {
     setUser(currentUser);
   };
 
+  const userCan = (ability: string, action: string) => {
+    if (!user) return false;
+    if (!user.role?.abilities?.includes(ability)) return false;
+    const a = user?.role?.abilities?.indexOf(ability);
+    const b = (user?.role?.abilities + "|").indexOf("|", a);
+    if (!user.role.abilities.substring(a, b).includes(action)) return false;
+    return true;
+  };
   const login = async (credentials: any) => {
     setUser(null);
     if (guard) {
@@ -94,7 +102,7 @@ const AuthProvider = ({ children, auth, guard = null }: any): any => {
   // console.log("====================================");
   return (
     <AuthContext.Provider
-      value={{ user, error, loaded, login, logout, config, guard }}
+      value={{ user, error, loaded, login, logout, config, guard, userCan }}
     >
       {loaded || <Spinner />}
       {auth && !user ? <LoginBasic /> : children}

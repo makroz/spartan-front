@@ -175,8 +175,9 @@ const DataTable = ({
           {datas.length > 0 ? (
             datas.map((row, index_row) => (
               <Fragment key={row.id}>
-                <Table.Row
+                <tr
                   key={row.id}
+                  id={"row-" + row.id + "-" + index_row}
                   onClick={(e) => {
                     if (onClickRowChildren) {
                       if (rowChildren[row.id] && rowChildren[row.id] != "") {
@@ -189,7 +190,11 @@ const DataTable = ({
                       }
                     }
                   }}
-                  className="bg-white dark:border-gray-700 dark:bg-gray-800"
+                  className={
+                    typeof columns._row?.className === "function"
+                      ? columns._row.className(row, index_row)
+                      : columns._row?.className || "!bg-red-400"
+                  }
                 >
                   {_sel && (
                     <Table.Cell className="!p-4">
@@ -213,7 +218,7 @@ const DataTable = ({
                       {renderActions(row, index_row)}
                     </Table.Cell>
                   )}
-                </Table.Row>
+                </tr>
                 {rowChildren[row.id] && rowChildren[row.id] != "" && (
                   <>
                     <Table.Row key={`${row.id}-children`}>

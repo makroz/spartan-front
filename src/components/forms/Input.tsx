@@ -36,7 +36,7 @@ const Input = (props: any) => {
         readOnly={props.readOnly}
         onChange={props.onChange}
         onBlur={props.onBlur}
-        value={props.value}
+        value={props.value || ""}
         autoComplete={props.type === "password" ? "off" : "on"}
       />
 

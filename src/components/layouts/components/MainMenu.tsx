@@ -1,12 +1,13 @@
-import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
-import { ChevronDown, ChevronRight, Circle } from "react-feather";
+import { ChevronRight } from "react-feather";
 import { mainMenu } from "../../../../config/mainMenu";
+import useAuth from "../../../hooks/useAuth";
 import ItemMenu from "./ItemMenu";
 
 const MainMenu = ({ config, onVisible, visible }: any) => {
   const [menu, setMenu]: any = useState(mainMenu);
+  const { userCan }: any = useAuth();
   const router = useRouter();
   const slug = config?.app?.link || "";
   let active = router.route;
@@ -20,9 +21,10 @@ const MainMenu = ({ config, onVisible, visible }: any) => {
     <ul className="space-y-2">
       {menu.map((item, index) => {
         if (item.type === "separator") return <hr key={index} />;
+        if (item.ability && userCan(item.id, "R") === false) return null;
         if (item.children)
           return (
-            <li key={item.id}>
+            <li key={item.id + "-" + index}>
               <div
                 className={
                   (item.open === true ? "text-secondary" : "menuItemNormal") +
