@@ -1,23 +1,33 @@
 import { Avatar } from "flowbite-react";
 import { useState } from "react";
 import DataCrud from "../src/components/DataCrud";
+import useAxios from "../src/hooks/useAxios";
 import { getFields } from "../src/utils/dbTools";
 import { initialsName } from "../src/utils/string";
 
 const usersPage = () => {
   const [formState, setFormState] = useState({});
   const [errorsForm, setErrorsForm] = useState({});
+  const { data: roles } = useAxios("/roles", "GET", {
+    perPage: -1,
+    sortBy: "name",
+    orderBy: "asc",
+    cols: ["id", "name", "description"],
+  });
   const fields = getFields([
     "id",
-    "name*|_h_::User",
+    "name*|_h_::Usuario",
     "email*",
     "password*",
-    "rol|Role|_h_",
+    "role_id|Rol|_h_",
     "status|_h_",
   ]);
 
-  fields["rol"].readOnly = true;
-  fields["rol"].value = "user";
+  // fields["rol"].readOnly = true;
+  // fields["rol"].value = "user";
+  fields["role_id"].options = roles?.data;
+  fields["role_id"].optionLabel = "description";
+
   fields["name"].render = (value, row, key, index) => {
     return (
       <Avatar
@@ -41,7 +51,7 @@ const usersPage = () => {
   return (
     <>
       <DataCrud
-        title="User"
+        title="Usuario"
         modulo="users"
         columns={fields}
         formState={formState}
