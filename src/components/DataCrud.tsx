@@ -19,6 +19,8 @@ const DataCrud = ({
   setErrorsForm,
   param = {},
   onClickRowChildren = null,
+  _sel = true,
+  _actions = true,
 }: any) => {
   const [openModal, setOpenModal] = useState(false);
   const [openDel, setOpenDel] = useState(false);
@@ -251,8 +253,9 @@ const DataCrud = ({
               params={{ ...params, total: data.total }}
               onChangePage={onChangePage}
               onChangePerPage={onChangePerPage}
-              onAction={onAction}
+              onAction={_actions ? onAction : false}
               onChangeSort={onChangeSort}
+              _sel={_sel}
             />
           </div>
         )}
