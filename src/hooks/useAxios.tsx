@@ -17,13 +17,13 @@ const useAxios = (url: any = null, method = "GET", payload = {}) => {
   };
   const reLoad = async (_payload: any = {}, prevent = false) => {
     if (prevent && countAxios == 0) return;
-    await execute(url, method, _payload);
+    await execute(url, method, _payload, true);
   };
   const execute = async (
-    _url: any = url,
-    _method: any = method,
+    _url: String = url,
+    _method: String = method,
     payload: any = {},
-    Act: any = true
+    Act: Boolean = false
   ) => {
     setError("");
     setLoaded(false);
@@ -43,7 +43,7 @@ const useAxios = (url: any = null, method = "GET", payload = {}) => {
         setData(response.data);
       }
       data = response.data;
-    } catch (err: any) {
+    } catch (err) {
       setError(err.message);
     } finally {
       setLoaded(true);
@@ -55,7 +55,7 @@ const useAxios = (url: any = null, method = "GET", payload = {}) => {
   useEffect(() => {
     if (url) {
       setCountAxios(countAxios + 1);
-      execute(url, method, payload);
+      execute(url, method, payload, true);
     } else {
       setError("");
       setData([]);

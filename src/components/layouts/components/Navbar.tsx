@@ -10,7 +10,7 @@ const Navbar = ({ onVisible = null }: any) => {
   const [dropUser, setDropUser] = useState(false);
 
   return (
-    <div className="navbar z-50">
+    <div className="navbar z-50 relative">
       <div>
         {onVisible && <Menu className="block md:hidden" onClick={onVisible} />}
       </div>
@@ -20,7 +20,9 @@ const Navbar = ({ onVisible = null }: any) => {
       >
         <div className="whitespace-nowrap">
           <div className="text-title">{user.name}</div>
-          <div className="text-subTitle text-xs">{t(user.rol)}</div>
+          <div className="text-subTitle text-xs">
+            {t(user.role?.description)}
+          </div>
         </div>
         <div className="relative">
           {user.photoURL && (
@@ -38,31 +40,31 @@ const Navbar = ({ onVisible = null }: any) => {
             </div>
           )}
           <span className="top-0 left-7 absolute  w-3.5 h-3.5 bg-green-400 border-2 border-white dark:border-gray-800 rounded-full"></span>
-          <DropDown open={dropUser} onOpen={setDropUser}>
-            <ul
-              className="py-1 text-sm text-gray-700 dark:text-gray-200"
-              aria-labelledby="avatarButton"
-            >
-              <li>
-                <a
-                  href="#"
-                  className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                >
-                  {t("Settings")}
-                </a>
-              </li>
-            </ul>
-            <div className="py-1">
+        </div>
+        <DropDown open={dropUser} onOpen={setDropUser}>
+          <ul
+            className="py-1 text-sm text-gray-700 dark:text-gray-200"
+            aria-labelledby="avatarButton"
+          >
+            <li>
               <a
                 href="#"
-                className="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-                onClick={() => logout()}
+                className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
               >
-                {t("Sign out")}
+                {t("Settings")}
               </a>
-            </div>
-          </DropDown>
-        </div>
+            </li>
+          </ul>
+          <div className="py-1">
+            <a
+              href="#"
+              className="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+              onClick={() => logout()}
+            >
+              {t("Sign out")}
+            </a>
+          </div>
+        </DropDown>
       </div>
     </div>
   );

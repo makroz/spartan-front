@@ -82,6 +82,16 @@ export const mainMenu = [
         title: "Cities",
         link: "/cities",
       },
+      {
+        id: "roles",
+        title: "Roles",
+        link: "/roles",
+      },
+      {
+        id: "abilities",
+        title: "Permisos",
+        link: "/abilities",
+      },
     ],
   },
 ];

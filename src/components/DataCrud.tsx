@@ -12,6 +12,7 @@ const DataCrud = ({
   modulo,
   columns,
   title = "",
+  msg = "",
   formState,
   setFormState,
   errorsForm,
@@ -94,7 +95,7 @@ const DataCrud = ({
     let errors = {};
     for (const key in columns) {
       const el = columns[key];
-      if (el.actions.includes(action)) {
+      if (el.actions?.includes(action)) {
         const el = columns[key];
 
         if (el.required && !formState[key]) {
@@ -141,7 +142,7 @@ const DataCrud = ({
     if (Object.keys(errors).length > 0) return;
     let payLoad = {};
     Object.keys(columns).map((key) => {
-      if (columns[key].actions.includes(action)) {
+      if (columns[key].actions?.includes(action)) {
         payLoad = { ...payLoad, [key]: formState[key] };
       }
     });
@@ -151,7 +152,7 @@ const DataCrud = ({
       method = "DELETE";
     }
     execute(url, method, payLoad, false);
-    reLoad({ ...params, origen: "reLoad" });
+    reLoad({ ...params });
     onCloseModal();
   };
   const onAdd = () => {
@@ -227,8 +228,9 @@ const DataCrud = ({
       <Card className="relative overflow-hidden">
         <h1>{t("List", title)}</h1>
         <Card>
-          <div className="flex justify-between">
-            <div className="">{!loaded && <Spinner />}</div>
+          <div className="flex justify-between items-center">
+            <div className="w-[30px] flex-shrink">{!loaded && <Spinner />}</div>
+            <div className="flex-grow">{msg}</div>
             {(!columns._actions?.render || columns._actions.render("add")) && (
               <button
                 className="btn btn-primary flex-shrink w-fit"
@@ -241,7 +243,7 @@ const DataCrud = ({
           </div>
         </Card>
         {data && (
-          <>
+          <div id={"DataTable_" + modulo}>
             <DataTable
               datas={data.data}
               columns={columns}
@@ -252,7 +254,7 @@ const DataCrud = ({
               onAction={onAction}
               onChangeSort={onChangeSort}
             />
-          </>
+          </div>
         )}
       </Card>
       <DataModal

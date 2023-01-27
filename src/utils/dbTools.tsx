@@ -91,8 +91,10 @@ export const getFields = (campos: any = []) => {
     if (auxN >= 0) {
       field.label = field.label || key.substring(0, auxN);
       field.inputType = "select";
-      field.optionValue = "id";
-      field.optionLabel = "name";
+    }
+    if (field.inputType == "select" || field.inputType == "subSelect") {
+      field.optionValue = field.optionValue || "id";
+      field.optionLabel = field.optionLabel || "name";
     }
 
     field.id = key;
@@ -114,6 +116,9 @@ export const getFields = (campos: any = []) => {
     result[key] = field;
     formSchema[key] = "";
   });
+
   result["_actions"] = { actions: [], inputType: "actions" };
+  result["_row"] = { className: "row", inputType: "row" };
+
   return result;
 };

@@ -44,7 +44,7 @@
     @apply bg-primary text-white dark:bg-secondary dark:text-primary;
   }
   .navbar {
-    @apply flex items-center justify-between  shadowPanels rounded-md my-5 mx-5 px-3 py-4 bg-white opacity-60;
+    @apply flex items-center justify-between  shadowPanels rounded-md my-5 mx-5 px-3 py-4 bg-white;
     min-height: 4.45rem;
     transition: 0.3s ease all, background 0s;
   }
