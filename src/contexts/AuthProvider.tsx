@@ -5,7 +5,7 @@ import useAxios from "../hooks/useAxios";
 import conf from "../../config/config";
 
 export const AuthContext = createContext({});
-const AuthProvider = ({ children, auth, guard = null }: any): any => {
+const AuthProvider = ({ children, noAuth = false, guard = null }: any): any => {
   const { error, loaded, execute } = useAxios();
   const [user, setUser] = useState<any>(null);
   const [guardia, setGuardia] = useState(guard);
@@ -105,7 +105,7 @@ const AuthProvider = ({ children, auth, guard = null }: any): any => {
       value={{ user, error, loaded, login, logout, config, guard, userCan }}
     >
       {loaded || <Spinner />}
-      {auth && !user ? <LoginBasic /> : children}
+      {!noAuth && !user ? <LoginBasic /> : children}
     </AuthContext.Provider>
   );
 };
