@@ -152,7 +152,7 @@ const DataCrud = ({
       method = "DELETE";
     }
     execute(url, method, payLoad, false);
-    reLoad({ ...params, origen: "reLoad" });
+    reLoad({ ...params });
     onCloseModal();
   };
   const onAdd = () => {
