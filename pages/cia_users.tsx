@@ -49,10 +49,8 @@ const ciaUsersPage = () => {
   fields["name"].className =
     "whitespace-nowrap text-gray-900 dark:text-white  flex items-start";
   fields["_actions"].render = (value, row, index) => {
-    if (value == "del") {
-      if (row.rol == "owner") return false;
-    }
-    return true;
+    if (value == "view") return true;
+    return false;
   };
 
   return (

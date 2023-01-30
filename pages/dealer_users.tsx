@@ -52,10 +52,8 @@ const dealerUsersPage = () => {
   fields["company_id"].render = (value, row, key, index) =>
     row.dealer.company.title;
   fields["_actions"].render = (value, row, index) => {
-    if (value == "del") {
-      if (row.rol == "owner") return false;
-    }
-    return true;
+    if (value == "view") return true;
+    return false;
   };
 
   return (
@@ -68,7 +66,7 @@ const dealerUsersPage = () => {
         setFormState={setFormState}
         errorsForm={errorsForm}
         setErrorsForm={setErrorsForm}
-        param={{ relations: ["dealer.company"] }}
+        param={{ relations: "role,dealer.company" }}
       />
     </>
   );
