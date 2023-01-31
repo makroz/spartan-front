@@ -1,6 +1,6 @@
 import { Badge, Checkbox, Pagination, Table } from "flowbite-react";
-import { Fragment, useState } from "react";
-import { ChevronDown, ChevronUp, Edit, Eye, Trash } from "react-feather";
+import { Fragment, useEffect, useState } from "react";
+import { ChevronDown, Edit, Eye, Trash } from "react-feather";
 import t from "../utils/traductor";
 import Select from "./forms/Select";
 
@@ -13,7 +13,6 @@ const DataTable = ({
   onAction,
   onClickRowChildren,
   onChangeSort,
-  //_sel = true,
 }): any => {
   const [sel, setSel]: any = useState([]);
   const [rowChildren, setRowChildren]: any = useState({});
