@@ -124,10 +124,10 @@ const companiesPage = () => {
             Link:{" "}
             <a
               target="_blank"
-              href={`https://company.myspartan.com/${row.link}`}
+              href={`https://company.myspartanhome.com/${row.link}`}
               className="text-blue-800"
             >
-              https://company.myspartan.com/{row.link}
+              https://company.myspartanhome.com/{row.link}
             </a>
           </div>
         </div>

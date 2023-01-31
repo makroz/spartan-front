@@ -19,14 +19,14 @@ const dealerUsersPage = () => {
     "name*|_h_::User",
     "email*",
     "password*",
-    "rol|Role|_h_",
+    "role_id|Role|_h_",
     "dealer_id*|_h_",
     "company_id|Company|_h_",
     "status|_h_",
   ]);
 
-  fields["rol"].readOnly = true;
-  fields["rol"].value = "team";
+  fields["role_id"].readOnly = true;
+  fields["role_id"].value = "2";
   fields["dealer_id"].options = data?.data;
   fields["dealer_id"].optionLabel = "title";
   fields["dealer_id"].actions = ["add", "view"];
@@ -52,23 +52,21 @@ const dealerUsersPage = () => {
   fields["company_id"].render = (value, row, key, index) =>
     row.dealer.company.title;
   fields["_actions"].render = (value, row, index) => {
-    if (value == "del") {
-      if (row.rol == "owner") return false;
-    }
-    return true;
+    if (value == "view") return true;
+    return false;
   };
 
   return (
     <>
       <DataCrud
         title="Users of Dealers"
-        modulo="dealer_users"
+        modulo="dealer-users"
         columns={fields}
         formState={formState}
         setFormState={setFormState}
         errorsForm={errorsForm}
         setErrorsForm={setErrorsForm}
-        param={{ relations: ["dealer.company"] }}
+        param={{ relations: "role,dealer.company" }}
       />
     </>
   );

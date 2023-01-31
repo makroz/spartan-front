@@ -117,8 +117,11 @@ export const getFields = (campos: any = []) => {
     formSchema[key] = "";
   });
 
-  result["_actions"] = { actions: [], inputType: "actions" };
-  result["_row"] = { className: "row", inputType: "row" };
+  result["_actions"] = {};
+  result["_row"] = {
+    className: "odd:bg-white even:bg-gray-50 hover:bg-gray-200",
+  };
+  result["_sel"] = false;
 
   return result;
 };

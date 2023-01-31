@@ -29,6 +29,12 @@ const rolesPage = () => {
 
   fields["abilities"].optionValue = "name";
   fields["abilities"].options = data?.data;
+  fields["_actions"].render = (value, row, index) => {
+    if (row?.id == 1) {
+      return false;
+    }
+    return true;
+  };
 
   return (
     <>

@@ -15,10 +15,10 @@ const Select = (props: any) => {
   if (props.readOnly) {
     if (props.options.filter) {
       valueText = props.options.filter(
-        (o: any) => o[props.optionValue] === props.value
+        (o: any) => o[props.optionValue || "id"] === props.value
       )[0];
       if (valueText) {
-        valueText = valueText[props.optionLabel];
+        valueText = valueText[props.optionLabel || "name"];
       }
     } else {
       valueText = props.options[props.value]?.label || "";
@@ -62,6 +62,9 @@ const Select = (props: any) => {
                 <option
                   key={option[props.optionValue] || option.value || key}
                   value={option[props.optionValue] || option.value || key}
+                  disabled={props.optionsDisabled?.includes(
+                    option[props.optionValue] + ""
+                  )}
                 >
                   {option[props.optionLabel] || option.label}
                 </option>
@@ -70,6 +73,9 @@ const Select = (props: any) => {
                 <option
                   key={key}
                   value={props.options[key][props.optionValue] || key}
+                  disabled={props.optionsDisabled?.includes(
+                    props.options[key][props.optionValue]
+                  )}
                 >
                   {props.options[key][props.optionValue] ||
                     props.options[key].label}

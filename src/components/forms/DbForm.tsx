@@ -42,6 +42,12 @@ const DbForm = ({
           );
         }
         if (fields[key].inputType == "select") {
+          if (!fields[key].options) {
+            const k = key.indexOf("_id") > -1 ? key.replace("_id", "") : "";
+            if (k != "" && formState[k] && formState[k]) {
+              fields[key].options = [formState[k]];
+            }
+          }
           return (
             <div key={key}>
               <Select
@@ -56,6 +62,7 @@ const DbForm = ({
                 options={fields[key].options}
                 optionValue={fields[key].optionValue}
                 optionLabel={fields[key].optionLabel}
+                optionsDisabled={fields[key].optionsDisabled}
               ></Select>
             </div>
           );

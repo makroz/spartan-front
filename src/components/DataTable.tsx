@@ -1,6 +1,6 @@
 import { Badge, Checkbox, Pagination, Table } from "flowbite-react";
-import { Fragment, useState } from "react";
-import { ChevronDown, ChevronUp, Edit, Eye, Trash } from "react-feather";
+import { Fragment, useEffect, useState } from "react";
+import { ChevronDown, Edit, Eye, Trash } from "react-feather";
 import t from "../utils/traductor";
 import Select from "./forms/Select";
 
@@ -13,7 +13,6 @@ const DataTable = ({
   onAction,
   onClickRowChildren,
   onChangeSort,
-  _sel = true,
 }): any => {
   const [sel, setSel]: any = useState([]);
   const [rowChildren, setRowChildren]: any = useState({});
@@ -61,10 +60,14 @@ const DataTable = ({
               (item) => item[columns[key].optionValue] == row[key]
             )?.[columns[key].optionLabel];
           }
-          return (
-            columns[key].options[row[key]][columns[key].optionLabel] ||
-            columns[key].options[row[key]]?.label
-          );
+          return columns[key].options[row[key]]
+            ? columns[key].options[row[key]][columns[key].optionLabel] ||
+                columns[key].options[row[key]]?.label
+            : "....";
+        } else {
+          const k = key.indexOf("_id") > -1 ? key.replace("_id", "") : "";
+          if (k != "" && row[k] && row[k][columns[key].optionLabel || "name"])
+            return row[k][columns[key].optionLabel || "name"];
         }
         return "...";
         break;
@@ -133,7 +136,7 @@ const DataTable = ({
     <>
       <Table hoverable={true} striped={true}>
         <Table.Head>
-          {_sel && (
+          {columns._sel && (
             <Table.HeadCell className="!p-4 w-12">
               <Checkbox onChange={onSelAll} />
             </Table.HeadCell>
@@ -193,10 +196,10 @@ const DataTable = ({
                   className={
                     typeof columns._row?.className === "function"
                       ? columns._row.className(row, index_row)
-                      : columns._row?.className || "!bg-red-400"
+                      : columns._row?.className || ""
                   }
                 >
-                  {_sel && (
+                  {columns._sel && (
                     <Table.Cell className="!p-4">
                       <Checkbox
                         value={row.id}
@@ -221,10 +224,20 @@ const DataTable = ({
                 </tr>
                 {rowChildren[row.id] && rowChildren[row.id] != "" && (
                   <>
-                    <Table.Row key={`${row.id}-children`}>
-                      <Table.Cell colSpan={columnsHeader.length + 2}>
+                    <Table.Row
+                      key={`${row.id}-children`}
+                      className={
+                        typeof columns._row?.className === "function"
+                          ? columns._row.className(row, index_row)
+                          : columns._row?.className || ""
+                      }
+                    >
+                      <td
+                        colSpan={columnsHeader.length + 2}
+                        className="py-4 px-2"
+                      >
                         {rowChildren[row.id]}
-                      </Table.Cell>
+                      </td>
                     </Table.Row>
                   </>
                 )}

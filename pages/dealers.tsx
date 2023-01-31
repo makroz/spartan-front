@@ -119,10 +119,10 @@ const dealersPage = () => {
             Link:{" "}
             <a
               target="_blank"
-              href={`https://dealer.myspartan.com/${row.link}`}
+              href={`https://dealer.myspartanhome.com/${row.link}`}
               className="text-blue-800"
             >
-              https://dealer.myspartan.com/{row.link}
+              https://dealer.myspartanhome.com/{row.link}
             </a>
           </div>
         </div>
