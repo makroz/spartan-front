@@ -237,7 +237,7 @@ const DataCrud = ({
           <div className="flex justify-between items-center">
             <div className="w-[30px] flex-shrink">{!loaded && <Spinner />}</div>
             <div className="flex-grow">{msg}</div>
-            {columns._actions?.render && columns._actions.render("add") && (
+            {(!columns._actions?.render || columns._actions.render("add")) && (
               <button
                 className="btn btn-primary flex-shrink w-fit"
                 onClick={onAdd}

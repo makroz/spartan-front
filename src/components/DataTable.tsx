@@ -64,6 +64,10 @@ const DataTable = ({
             ? columns[key].options[row[key]][columns[key].optionLabel] ||
                 columns[key].options[row[key]]?.label
             : "....";
+        } else {
+          const k = key.indexOf("_id") > -1 ? key.replace("_id", "") : "";
+          if (k != "" && row[k] && row[k][columns[key].optionLabel || "name"])
+            return row[k][columns[key].optionLabel || "name"];
         }
         return "...";
         break;

@@ -19,13 +19,13 @@ const ciaUsersPage = () => {
     "name*|_h_::User",
     "email*",
     "password*",
-    "rol|Role|_h_",
+    "role_id|Role|_h_",
     "company_id*|_h_",
     "status|_h_",
   ]);
 
-  fields["rol"].readOnly = true;
-  fields["rol"].value = "team";
+  fields["role_id"].readOnly = true;
+  fields["role_id"].value = "2";
   fields["company_id"].options = data?.data;
   fields["company_id"].optionLabel = "title";
   fields["company_id"].actions = ["add", "view"];
@@ -57,12 +57,13 @@ const ciaUsersPage = () => {
     <>
       <DataCrud
         title="Users of Cias"
-        modulo="cia_users"
+        modulo="cia-users"
         columns={fields}
         formState={formState}
         setFormState={setFormState}
         errorsForm={errorsForm}
         setErrorsForm={setErrorsForm}
+        param={{ relations: "role" }}
       />
     </>
   );
