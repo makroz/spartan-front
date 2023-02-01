@@ -11,7 +11,6 @@ export const getDefaultFormState = (fields: any = {}) => {
 
 export const getFields = (campos: any = []) => {
   let result = {};
-  let formSchema = {};
   campos.map((key) => {
     let auxN: number = -1;
     let auxS: string = "";
@@ -23,6 +22,7 @@ export const getFields = (campos: any = []) => {
       readOnly: false,
       sortable: true,
       actions: ["add", "edit", "view"],
+      search: true,
     };
     auxN = key.indexOf("*");
     if (auxN >= 0) {
@@ -63,16 +63,17 @@ export const getFields = (campos: any = []) => {
       field.inputType = "password";
       field.rules = field.rules || "min:6|max:20";
       field.actions = ["add"];
+      field.search = false;
     }
     if (key == "rol") {
       field.inputType = "select";
-      field.options = field.options || {
-        user: { label: t("User") },
-        team: { label: t("Team") },
-        admin: { label: t("Admin") },
-        adm: { label: t("Admin") },
-        owner: { label: t("Owner") },
-      };
+      // field.options = field.options || {
+      //   user: { label: t("User") },
+      //   team: { label: t("Team") },
+      //   admin: { label: t("Admin") },
+      //   adm: { label: t("Admin") },
+      //   owner: { label: t("Owner") },
+      // };
     }
     if (key == "status") {
       field.inputType = "select";
@@ -98,23 +99,8 @@ export const getFields = (campos: any = []) => {
     }
 
     field.id = key;
-    // if (columns && columns[key]) {
-    //   if (columns[key].header) {
-    //     field.label = field.label || columns[key].header;
-    //   } else {
-    //     field.label = field.label || capitalize(key);
-    //     columns[key].header = field.label;
-    //   }
-    //   columns[key].type = field.inputType;
-    //   if (field.options) {
-    //     columns[key].options = field.options;
-    //     columns[key].optionValue = field.optionValue;
-    //     columns[key].optionLabel = field.optionLabel;
-    //   }
-    // }
     field.label = field.label || capitalize(key);
     result[key] = field;
-    formSchema[key] = "";
   });
 
   result["_actions"] = {};

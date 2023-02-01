@@ -8,14 +8,28 @@ const DataTable = ({
   datas,
   columns,
   params,
-  onChangePage,
-  onChangePerPage,
   onAction,
   onClickRowChildren,
-  onChangeSort,
+  setParams,
 }): any => {
   const [sel, setSel]: any = useState([]);
   const [rowChildren, setRowChildren]: any = useState({});
+
+  const onChangeSort = (sortBy, orderBy) => {
+    if (params.sortBy == sortBy && params.orderBy == orderBy) return;
+    setParams({ ...params, sortBy, orderBy });
+  };
+  const onChangePage = (page) => {
+    if (params.page == page) return;
+    setParams({ ...params, page });
+  };
+  const onChangePerPage = (e) => {
+    let perPage = e.target.value;
+    if (params.perPage == perPage) return;
+    if (!perPage) perPage = -1;
+    setParams({ ...params, perPage });
+  };
+
   const onSelAll = (e) => {
     if (e.target.checked) {
       setSel(datas.map((row) => row.id + ""));
@@ -256,7 +270,7 @@ const DataTable = ({
         </Table.Body>
       </Table>
       <div className="flex justify-between flex-wrap">
-        {onChangePage && (
+        {setParams && (
           <Pagination
             currentPage={params.page}
             onPageChange={onChangePage}
@@ -266,7 +280,7 @@ const DataTable = ({
             nextLabel=""
           />
         )}
-        {onChangePerPage && (
+        {setParams && (
           <Select
             name="perPage"
             value={params.perPage}
