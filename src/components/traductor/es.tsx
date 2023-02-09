@@ -12,6 +12,7 @@ const idioma: any = {
   "must be less than ": "debe ser menor que",
   "must be between ": "debe star entre",
   and: "y",
+  or: "o",
   list: "listado de {0}",
   add: "adicionar",
   edit: "editar",
@@ -42,5 +43,20 @@ const idioma: any = {
   "please sign-in to your account and start the adventure":
     "por favor ingrese a su cuenta y comience la aventura",
   "sign in": "ingresar",
+  "advanced search": "búsqueda avanzada",
+  equal: "igual",
+  "not equal": "no igual",
+  contains: "contiene",
+  "not contains": "no contiene",
+  "starts with": "empieza con",
+  "ends with": "termina con",
+  "greater than": "mayor que",
+  "less than": "menor que",
+  "greater or equal": "mayor o igual",
+  "less or equal": "menor o igual",
+  field: "campo",
+  value: "valor",
+  "search by": "buscar por",
+  criteria: "criterio",
 };
 export default idioma;

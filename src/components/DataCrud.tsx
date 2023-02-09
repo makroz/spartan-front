@@ -1,4 +1,4 @@
-import { Card } from "flowbite-react";
+import { log } from "console";
 import { useEffect, useState } from "react";
 import useAxios from "../hooks/useAxios";
 import { getDefaultFormState } from "../utils/dbTools";
@@ -12,11 +12,6 @@ import { checkRules } from "./validate/Rules";
 const DataCrud = ({
   modulo,
   columns,
-  title = "",
-  msgTop = "",
-  msg = "",
-  msgMid = "",
-  msgBot = "",
   formState,
   setFormState,
   errorsForm,
@@ -27,14 +22,21 @@ const DataCrud = ({
   textBtnAdd = "",
   datas = null,
   reload = null,
-  setSearch = null,
+  searchType = "",
+  searchFunc = null,
+  // setAdvSearch = null,
+  title = "",
+  msgs = "",
+  classTable = "",
+  showFooter = true,
 }: any) => {
   const [openModal, setOpenModal] = useState(false);
   const [openDel, setOpenDel] = useState(false);
   const [titleModal, setTitleModal] = useState("");
   const [action, setAction] = useState("view");
+  const [actSearch, setActSearch] = useState([]);
 
-  title = capitalize(title || modulo);
+  title = capitalize(t(title || modulo));
   const [params, setParams] = useState({
     page: 1,
     perPage: 10,
@@ -44,7 +46,7 @@ const DataCrud = ({
     relations: "",
     ...param,
   });
-  const [oldSearch, setOldSearch] = useState(JSON.stringify(params.searchBy));
+
   let url = "/" + modulo;
   if (reload) {
     url = "";
@@ -66,6 +68,10 @@ const DataCrud = ({
     reLoad({ ...params, origen: "reLoad" }, true);
   }, [params]);
 
+  const msg = (type: string) => {
+    if (msgs[type] == "head") return msgs[type] || msgs;
+    return msgs[type] || "";
+  };
   const onCloseModal = () => {
     setOpenModal(false);
     setOpenDel(false);
@@ -154,33 +160,71 @@ const DataCrud = ({
     }
   };
 
-  const _setSearch = (searchBy) => {
-    if (JSON.stringify(searchBy) == oldSearch) return;
-    const param = setSearch(searchBy);
-    setOldSearch(JSON.stringify(searchBy));
-    if (param === false) return;
+  // const _setSearch = (searchBy, setSearch) => {
+  //   const param = setSearch(searchBy, setSearch);
+  //   if (param === false) return;
+  //   setParams({ ...params, ...param });
+  // };
 
-    setParams({
-      ...params,
-      ...param,
-    });
+  const _setSearch = (search, setSearch) => {
+    setActSearch(search);
+    let searchBy = search;
+    if (searchType == "a") {
+      const _search: string[] = [];
+      if (search?.length > 0)
+        search?.map((s) => {
+          if (s.field != "" && s.criteria != "" && s.search != "") {
+            _search.push(
+              s.field +
+                "," +
+                s.criteria +
+                "," +
+                s.search +
+                "," +
+                s.join +
+                "," +
+                s.gb +
+                "," +
+                s.ge
+            );
+          }
+        });
+      searchBy = "";
+      if (_search.length > 0) {
+        searchBy = _search.join("|");
+      }
+    }
+    //console.log("searchBy", searchBy);
+
+    let param = {};
+    if (searchFunc) {
+      param = searchFunc(searchBy, setSearch);
+      if (param === false) return;
+    }
+    if (searchType == "b") {
+      searchBy = "name,like,%" + search + "%";
+    }
+    console.log("searchBy", searchBy);
+    setParams({ ...params, searchBy, ...param });
   };
 
   return (
     <>
-      <Card className="relative overflow-hidden">
+      <div className="relative overflow-hidden flex rounded-lg border p-2 md:p-6 border-gray-200 bg-white shadow-md dark:border-gray-700 dark:bg-gray-800 flex-col  ">
         <h1>{t("List", title)}</h1>
-        {msgTop}
+        {msg("top")}
         <DataHeader
           columns={columns}
-          msg={msg}
+          msg={msg("head")}
           onAdd={onAdd}
           textBtnAdd={textBtnAdd}
           title={title}
           loaded={loaded}
-          setSearch={setSearch ? _setSearch : null}
+          setSearch={_setSearch}
+          searchType={searchType}
+          search={params.searchBy}
         />
-        {msgMid}
+        {msg("middle")}
         {data?.data && (
           <div id={"DataTable_" + modulo}>
             <DataTable
@@ -190,11 +234,13 @@ const DataCrud = ({
               params={{ ...params, total: data.total }}
               onAction={_actions ? onAction : false}
               setParams={setParams}
+              className={classTable}
+              showFooter={showFooter}
             />
           </div>
         )}
-        {msgBot}
-      </Card>
+        {msg("bottom")}
+      </div>
       <DataForm
         formState={formState}
         setFormState={setFormState}

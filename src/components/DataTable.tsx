@@ -1,5 +1,5 @@
 import { Badge, Checkbox, Pagination, Table } from "flowbite-react";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useState } from "react";
 import { ChevronDown, Edit, Eye, Trash } from "react-feather";
 import t from "../utils/traductor";
 import Select from "./forms/Select";
@@ -11,6 +11,9 @@ const DataTable = ({
   onAction,
   onClickRowChildren,
   setParams,
+  className = "",
+  showHeader = true,
+  showFooter = true,
 }): any => {
   const [sel, setSel]: any = useState([]);
   const [rowChildren, setRowChildren]: any = useState({});
@@ -59,25 +62,28 @@ const DataTable = ({
     switch (columns[key].inputType) {
       case "select":
         if (columns[key].options) {
+          let s = "....";
+          if (columns[key].options.find) {
+            s = columns[key].options.find(
+              (item) => item[columns[key].optionValue] == row[key]
+            )?.[columns[key].optionLabel];
+          } else {
+            s = columns[key].options[row[key]]
+              ? columns[key].options[row[key]][columns[key].optionLabel] ||
+                columns[key].options[row[key]]?.name
+              : "....";
+          }
           if (columns[key].badge) {
             return (
               <Badge
                 color={columns[key].options[row[key]]?.color}
                 className="rounded-full  justify-center"
               >
-                {columns[key].options[row[key]]?.label}
+                {s}
               </Badge>
             );
           }
-          if (columns[key].options.find) {
-            return columns[key].options.find(
-              (item) => item[columns[key].optionValue] == row[key]
-            )?.[columns[key].optionLabel];
-          }
-          return columns[key].options[row[key]]
-            ? columns[key].options[row[key]][columns[key].optionLabel] ||
-                columns[key].options[row[key]]?.label
-            : "....";
+          return s;
         } else {
           const k = key.indexOf("_id") > -1 ? key.replace("_id", "") : "";
           if (k != "" && row[k] && row[k][columns[key].optionLabel || "name"])
@@ -148,45 +154,47 @@ const DataTable = ({
 
   return (
     <>
-      <Table hoverable={true} striped={true}>
-        <Table.Head>
-          {columns._sel && (
-            <Table.HeadCell className="!p-4 w-12">
-              <Checkbox onChange={onSelAll} />
-            </Table.HeadCell>
-          )}
-          {columnsHeader.map((key) => (
-            <Table.HeadCell key={key}>
-              <div
-                className="flex justify-between group"
-                onClick={() => {
-                  if (columns[key].sortable) onSort(key);
-                }}
-              >
+      <Table hoverable={true} striped={true} className={className}>
+        {showHeader && (
+          <Table.Head>
+            {columns._sel && (
+              <Table.HeadCell className="!p-4 w-12">
+                <Checkbox onChange={onSelAll} />
+              </Table.HeadCell>
+            )}
+            {columnsHeader.map((key) => (
+              <Table.HeadCell key={key}>
                 <div
-                  className={`${
-                    columns[key].sortable ? "group-hover:text-blue-500" : null
-                  }`}
+                  className="flex justify-between group"
+                  onClick={() => {
+                    if (columns[key].sortable) onSort(key);
+                  }}
                 >
-                  {columns[key].header === true
-                    ? columns[key].label
-                    : columns[key].header}
+                  <div
+                    className={`${
+                      columns[key].sortable ? "group-hover:text-blue-500" : null
+                    }`}
+                  >
+                    {columns[key].header === true
+                      ? columns[key].label
+                      : columns[key].header}
+                  </div>
+                  {params.sortBy == key && (
+                    <ChevronDown
+                      size={18}
+                      className={`font-medium text-blue-600 group-hover:-translate-y-1 transform ${
+                        params.orderBy == "asc" ? "rotate-180" : null
+                      } transition-all ease-in-out duration-200`}
+                    />
+                  )}
                 </div>
-                {params.sortBy == key && (
-                  <ChevronDown
-                    size={18}
-                    className={`font-medium text-blue-600 group-hover:-translate-y-1 transform ${
-                      params.orderBy == "asc" ? "rotate-180" : null
-                    } transition-all ease-in-out duration-200`}
-                  />
-                )}
-              </div>
-            </Table.HeadCell>
-          ))}
-          {onAction && (
-            <Table.HeadCell className="w-24">{t("Actions")}</Table.HeadCell>
-          )}
-        </Table.Head>
+              </Table.HeadCell>
+            ))}
+            {onAction && (
+              <Table.HeadCell className="w-24">{t("Actions")}</Table.HeadCell>
+            )}
+          </Table.Head>
+        )}
 
         <Table.Body className="divide-y">
           {datas.length > 0 ? (
@@ -248,7 +256,7 @@ const DataTable = ({
                     >
                       <td
                         colSpan={columnsHeader.length + 2}
-                        className="py-4 px-2"
+                        className="py-0 px-0"
                       >
                         {rowChildren[row.id]}
                       </td>
@@ -269,8 +277,8 @@ const DataTable = ({
           )}
         </Table.Body>
       </Table>
-      <div className="flex justify-between flex-wrap">
-        {setParams && (
+      {showFooter && (
+        <div className="flex justify-between flex-wrap">
           <Pagination
             currentPage={params.page}
             onPageChange={onChangePage}
@@ -279,13 +287,11 @@ const DataTable = ({
             previousLabel=""
             nextLabel=""
           />
-        )}
-        {setParams && (
           <Select
             name="perPage"
             value={params.perPage}
             onChange={onChangePerPage}
-            className="w-24"
+            classInput="mt-2 p-1.5 border-gray-300"
             placeholder={t("All")}
             options={[
               { value: "10", label: "10" },
@@ -295,8 +301,8 @@ const DataTable = ({
               { value: "50", label: "50" },
             ]}
           ></Select>
-        )}
-      </div>
+        </div>
+      )}
     </>
   );
 };

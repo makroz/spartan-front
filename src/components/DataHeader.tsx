@@ -1,5 +1,6 @@
 import { Spinner } from "flowbite-react";
 import t from "../utils/traductor";
+import DataAdvSearch from "./DataAdvSearch";
 import DataSearch from "./DataSearch";
 const DataHeader = ({
   columns,
@@ -9,15 +10,21 @@ const DataHeader = ({
   title,
   loaded,
   setSearch = null,
+  searchType = "b",
+  search = [],
 }: any) => {
   return (
     <div className="flex rounded-lg border border-gray-200 bg-white shadow-md dark:border-gray-700 dark:bg-gray-800 flex-col p-2">
       <div className="flex justify-between items-center">
         <div className="">
           {!loaded && <Spinner />}
-          {setSearch && (
+          {searchType != "" && (
             <div className={!loaded ? "hidden" : "block"}>
-              <DataSearch setSearch={setSearch} />
+              {searchType == "b" ? (
+                <DataSearch setSearch={setSearch} />
+              ) : (
+                <DataAdvSearch campos={columns} setAdvSearch={setSearch} />
+              )}
             </div>
           )}
         </div>

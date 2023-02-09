@@ -58,6 +58,7 @@ export const getFields = (campos: any = []) => {
 
     if (key == "id") {
       field.inputType = "hidden";
+      field.search = false;
     }
     if (key == "password") {
       field.inputType = "password";
@@ -67,20 +68,13 @@ export const getFields = (campos: any = []) => {
     }
     if (key == "rol") {
       field.inputType = "select";
-      // field.options = field.options || {
-      //   user: { label: t("User") },
-      //   team: { label: t("Team") },
-      //   admin: { label: t("Admin") },
-      //   adm: { label: t("Admin") },
-      //   owner: { label: t("Owner") },
-      // };
     }
     if (key == "status") {
       field.inputType = "select";
-      field.options = field.options || {
-        A: { label: t("Active") },
-        X: { label: t("Inactive") },
-      };
+      field.options = field.options || [
+        { id: "A", name: t("Active") },
+        { id: "X", name: t("Inactive") },
+      ];
       field.value = field.value || "A";
       field.badge = true;
     }
