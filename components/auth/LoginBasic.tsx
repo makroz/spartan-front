@@ -1,7 +1,7 @@
 import { Avatar } from "flowbite-react";
-import useConfig from "../../hooks/useConfig";
-import { initialsName } from "../../utils/string";
-import Login from "./Login";
+import useConfig from "../../src/hooks/useConfig";
+import { initialsName } from "../../src/utils/string";
+import Login from "../../src/components/auth/Login";
 
 const LoginBasic = () => {
   const config = useConfig();

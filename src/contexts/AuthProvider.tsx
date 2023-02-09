@@ -3,7 +3,7 @@ import { createContext, useEffect, useState } from "react";
 import Spinner from "../components/layouts/Spinner";
 import useAxios from "../hooks/useAxios";
 import conf from "../../config/config";
-import LoginBasic from "../../components/LoginBasic";
+import LoginBasic from "../../components/auth/LoginBasic";
 
 export const AuthContext = createContext({});
 const AuthProvider = ({ children, noAuth = false, guard = null }: any): any => {

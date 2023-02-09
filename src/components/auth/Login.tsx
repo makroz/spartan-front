@@ -1,8 +1,8 @@
 import { useRouter } from "next/router";
 import { useState } from "react";
+import LoginView from "../../../components/auth/LoginView";
 import useAuth from "../../hooks/useAuth";
 import t from "../../utils/traductor";
-import Input from "../forms/Input";
 
 const Login = () => {
   const { user, error, login, config }: any = useAuth();
@@ -54,37 +54,13 @@ const Login = () => {
   };
 
   return (
-    <form className="p-2">
-      <h1>
-        {t("Welcome to")} {config?.app.appName}!
-      </h1>
-      <h2>{t("Please sign-in to your account and start the adventure")}</h2>
-      <br />
-      <Input
-        label={config?.app.loginLabel || "Email"}
-        type="text"
-        name="email"
-        error={errors}
-        value={formState.email}
-        onChange={(e) => handleChange(e)}
-      ></Input>
-      <Input
-        label="Password"
-        type="password"
-        name="password"
-        error={errors}
-        value={formState.password}
-        onChange={(e) => handleChange(e)}
-      ></Input>
-      <div>
-        <button
-          className="btn btn-primary w-full"
-          onClick={(e) => handleSubmit(e)}
-        >
-          {t("Sign in")}
-        </button>
-      </div>
-    </form>
+    <LoginView
+      config={config}
+      errors={errors}
+      formState={formState}
+      handleChange={handleChange}
+      handleSubmit={handleSubmit}
+    />
   );
 };
 
