@@ -10,7 +10,7 @@ const rolesPage = () => {
     perPage: -1,
     sortBy: "name",
     orderBy: "asc",
-    cols: ["id", "name"],
+    cols: ["id", "name", "description"],
   });
 
   const abilitiesL: any = [
@@ -22,11 +22,12 @@ const rolesPage = () => {
   const fields = getFields([
     "name*|Role|_h_",
     "description*|_h_",
-    "abilities*|inputType::subSelect|optionsSub::" + JSON.stringify(abilitiesL),
+    "abilities|inputType::subSelect|optionsSub::" + JSON.stringify(abilitiesL),
     "status*|_h_",
   ]);
 
   fields["abilities"].optionValue = "name";
+  fields["abilities"].optionLabel = "description";
   fields["abilities"].options = data?.data;
   fields["_actions"].render = (value, row, index) => {
     if (row?.id == 1) {
