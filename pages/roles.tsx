@@ -14,16 +14,15 @@ const rolesPage = () => {
   });
 
   const abilitiesL: any = [
-    { label: "Crear", value: "C" },
-    { label: "Leer", value: "R" },
-    { label: "Editar", value: "U" },
-    { label: "Borrar", value: "D" },
+    { label: "Create", value: "C" },
+    { label: "Read", value: "R" },
+    { label: "Update", value: "U" },
+    { label: "Delete", value: "D" },
   ];
   const fields = getFields([
-    "name*|Rol|_h_",
-    "description*|Descripcion|_h_",
-    "abilities*|Permisos|inputType::subSelect|optionsSub::" +
-      JSON.stringify(abilitiesL),
+    "name*|Role|_h_",
+    "description*|_h_",
+    "abilities*|inputType::subSelect|optionsSub::" + JSON.stringify(abilitiesL),
     "status*|_h_",
   ]);
 

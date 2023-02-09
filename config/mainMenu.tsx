@@ -89,8 +89,18 @@ export const mainMenu = [
       },
       {
         id: "abilities",
-        title: "Permisos",
+        title: "Abilities",
         link: "/abilities",
+      },
+      {
+        id: "cia-abilities",
+        title: "Abilities Cias",
+        link: "/cia_abilities",
+      },
+      {
+        id: "dealer-abilities",
+        title: "Abilities Dealers",
+        link: "/dealer_abilities",
       },
     ],
   },

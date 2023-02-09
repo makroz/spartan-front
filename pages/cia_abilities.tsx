@@ -2,7 +2,7 @@ import { useState } from "react";
 import DataCrud from "../src/components/DataCrud";
 import { getFields } from "../src/utils/dbTools";
 
-const abilitiesPage = () => {
+const cia_abilitiesPage = () => {
   const [formState, setFormState] = useState({});
   const [errorsForm, setErrorsForm] = useState({});
 
@@ -11,8 +11,8 @@ const abilitiesPage = () => {
   return (
     <>
       <DataCrud
-        title="Abilities"
-        modulo="abilities"
+        title="Abilities of Cias"
+        modulo="cia-abilities"
         columns={fields}
         formState={formState}
         setFormState={setFormState}
@@ -23,5 +23,5 @@ const abilitiesPage = () => {
   );
 };
 
-export default abilitiesPage;
-abilitiesPage.auth = true;
+export default cia_abilitiesPage;
+cia_abilitiesPage.auth = true;
