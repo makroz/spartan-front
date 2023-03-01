@@ -12,6 +12,7 @@ const dealersPage = () => {
   const [city, setCity] = useState("");
   const [formState, setFormState] = useState({});
   const [errorsForm, setErrorsForm] = useState({});
+  const [fieldStates, setFieldStates] = useState({});
   const { data: companies }: any = useAxios("/companies", "GET", {
     perPage: 0,
     sortBy: "title",
@@ -24,15 +25,8 @@ const dealersPage = () => {
     orderBy: "asc",
     cols: ["id", "name"],
   });
-  const { data: states }: any = useAxios("/states", "GET", {
+  const { data: states, execute }: any = useAxios("/states", "GET", {
     perPage: 0,
-    sortBy: "name",
-    orderBy: "asc",
-    cols: ["id", "name"],
-  });
-  const { data: cities, loaded, execute }: any = useAxios("/cities", "GET", {
-    perPage: 0,
-    searchBy: ["state_id", "=", state],
     sortBy: "name",
     orderBy: "asc",
     cols: ["id", "name"],
@@ -51,11 +45,10 @@ const dealersPage = () => {
       if (data[0].zipcodes) {
         const state = data[0].zipcodes[0].state;
         const city = data[0].zipcodes[0].default_city;
+        setCity(city);
         const state_id = states.data.find((s) => s.name == state).id;
         setErrorsForm({});
-        if (state_id == state) setState("");
         setState(state_id);
-        setCity(city);
       } else {
         setErrorsForm({ ...errorsForm, zip: "Zip code not found" });
       }
@@ -100,7 +93,7 @@ const dealersPage = () => {
   fields["activation_date"].inputType = "hidden";
   fields["state_id"].options = states?.data;
   fields["state_id"].onChange = setState;
-  fields["city_id"].options = cities?.data;
+  fields["city_id"].options = {};
   fields["city_id"].render = (value, row, key, index) => row.city.name;
   fields["zip"].onBlur = onBlurZip;
   fields["title"].render = (value, row, key, index) => {
@@ -138,7 +131,7 @@ const dealersPage = () => {
   useEffect(() => {
     const cargar = async () => {
       const { data: cities, loaded }: any = await execute("/cities", "GET", {
-        perpAge: 0,
+        perPage: 0,
         searchBy: ["state_id", "=", state],
         sortBy: "name",
         orderBy: "asc",
@@ -149,16 +142,20 @@ const dealersPage = () => {
         fields["city_id"].value = city_id;
         setFormState({ ...formState, city_id, state_id: state });
       }
+      setFieldStates(fields);
     };
     if (state != "") cargar();
   }, [state]);
+  useEffect(() => {
+    setFieldStates(fields);
+  }, [countries, states]);
 
   return (
     <>
       <DataCrud
         title="Dealers"
         modulo="dealers"
-        columns={fields}
+        columns={fieldStates}
         formState={formState}
         setFormState={setFormState}
         errorsForm={errorsForm}
