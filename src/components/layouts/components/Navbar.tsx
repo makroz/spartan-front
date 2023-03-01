@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import { Menu, X } from "react-feather";
+import { useState } from "react";
 import useAuth from "../../../hooks/useAuth";
 import { initialsName } from "../../../utils/string";
 import t from "../../../utils/traductor";
-import DropDown from "../../DropDown";
+import DropDown from "../../ui/DropDown";
+import Hamburguer from "./Hamburguer";
 
 const Navbar = ({ onVisible = null, visible = false }: any) => {
   const { user, logout }: any = useAuth();
@@ -12,13 +12,20 @@ const Navbar = ({ onVisible = null, visible = false }: any) => {
   return (
     <div className="navbar z-30 relative">
       <div>
+        <Hamburguer
+          onClick={onVisible}
+          active={visible}
+          className="block md:hidden"
+        />
+      </div>
+      {/* <div>
         {onVisible && !visible && (
           <Menu className="block md:hidden" onClick={onVisible} />
         )}
         {onVisible && visible && (
           <X className="block md:hidden" onClick={onVisible} />
         )}
-      </div>
+      </div> */}
       <div
         className="flex items-center align-middle gap-2 ml-9 overflow-hidden"
         onClick={(e) => setDropUser(!dropUser)}

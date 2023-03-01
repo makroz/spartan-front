@@ -3,6 +3,7 @@ import { Fragment, useState } from "react";
 import { ChevronDown, Edit, Eye, Trash } from "react-feather";
 import t from "../utils/traductor";
 import Select from "./forms/Select";
+// import styled from "../styles/dataTable.module.css";
 
 const DataTable = ({
   datas,
@@ -55,14 +56,14 @@ const DataTable = ({
     if (columns[key].header) columnsHeader.push(key);
   });
 
-  const renderCell = (row, key, index_row) => {
-    if (columns[key].render) {
-      return columns[key].render(row[key], row, key, index_row);
-    }
+  const renderCell = (row, key, index) => {
+    let result: any = "";
+    let s: any = "";
     switch (columns[key].inputType) {
       case "select":
+        result = "...";
         if (columns[key].options) {
-          let s = "....";
+          s = "....";
           if (columns[key].options.find) {
             s = columns[key].options.find(
               (item) => item[columns[key].optionValue] == row[key]
@@ -74,7 +75,7 @@ const DataTable = ({
               : "....";
           }
           if (columns[key].badge) {
-            return (
+            s = (
               <Badge
                 color={columns[key].options[row[key]]?.color}
                 className="rounded-full  justify-center"
@@ -83,16 +84,16 @@ const DataTable = ({
               </Badge>
             );
           }
-          return s;
+          result = s;
         } else {
           const k = key.indexOf("_id") > -1 ? key.replace("_id", "") : "";
           if (k != "" && row[k] && row[k][columns[key].optionLabel || "name"])
-            return row[k][columns[key].optionLabel || "name"];
+            result = row[k][columns[key].optionLabel || "name"];
         }
-        return "...";
+        // return "...";
         break;
       case "color":
-        return (
+        result = (
           <div
             style={{ backgroundColor: row[key], color: "black" }}
             className="rounded-full  justify-center text-center py-0 px-3"
@@ -102,9 +103,19 @@ const DataTable = ({
         );
         break;
       default:
-        return row[key];
+        result = row[key];
         break;
     }
+    if (columns[key].render) {
+      return columns[key].render({
+        value: row[key],
+        row,
+        key,
+        processed: result,
+        index,
+      });
+    }
+    return result;
   };
 
   const onSort = (key) => {
@@ -122,7 +133,7 @@ const DataTable = ({
     return (
       <>
         {(!columns._actions?.render ||
-          columns._actions.render("view", row, index)) && (
+          columns._actions.render({ value: "view", row, index })) && (
           <button
             onClick={() => onAction("view", row)}
             className="font-medium text-green-600 hover:-translate-y-1 "
@@ -131,7 +142,7 @@ const DataTable = ({
           </button>
         )}
         {(!columns._actions?.render ||
-          columns._actions.render("edit", row, index)) && (
+          columns._actions.render({ value: "edit", row, index })) && (
           <button
             onClick={() => onAction("edit", row)}
             className="font-medium text-blue-600 hover:-translate-y-1 "
@@ -140,7 +151,7 @@ const DataTable = ({
           </button>
         )}
         {(!columns._actions?.render ||
-          columns._actions.render("del", row, index)) && (
+          columns._actions.render({ value: "del", row, index })) && (
           <button
             onClick={() => onAction("del", row)}
             className="font-medium text-red-600 hover:-translate-y-1"
@@ -199,7 +210,7 @@ const DataTable = ({
         <Table.Body className="divide-y">
           {datas.length > 0 ? (
             datas.map((row, index_row) => (
-              <Fragment key={row.id}>
+              <Fragment key={"row" + index_row}>
                 <tr
                   key={row.id}
                   id={"row-" + row.id + "-" + index_row}
@@ -291,7 +302,7 @@ const DataTable = ({
             name="perPage"
             value={params.perPage}
             onChange={onChangePerPage}
-            classInput="mt-2 p-1.5 border-gray-300"
+            className="mt-2 !w-16 "
             placeholder={t("All")}
             options={[
               { value: "10", label: "10" },

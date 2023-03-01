@@ -1,28 +1,8 @@
-import React from "react";
+import ControlLabel from "./ControlLabel";
 
 const Input = (props: any) => {
-  const clase = props.classDiv || "";
-  const claser =
-    (props.classInput || "") +
-    " " +
-    (props.rounded
-      ? props.rounded === "l"
-        ? "rounded-l-lg"
-        : "rounded-r-lg"
-      : "rounded-lg");
-
   return (
-    <div className={`input ${clase}`}>
-      {props.type === "hidden" ? null : (
-        <label
-          htmlFor={props.name}
-          className={`input-label ${
-            props.required ? "text-black font-bold" : null
-          }`}
-        >
-          {props.label} {props.required ? "*" : null}
-        </label>
-      )}
+    <ControlLabel {...props}>
       <input
         type={props.type || "text"}
         min={props.min}
@@ -30,7 +10,7 @@ const Input = (props: any) => {
         name={props.name}
         id={props.name}
         placeholder={props.placeholder || ""}
-        className={claser}
+        className={props.className}
         required={props.required}
         disabled={props.disabled}
         readOnly={props.readOnly}
@@ -54,20 +34,7 @@ const Input = (props: any) => {
           />
         </svg>
       )}
-      {props.type === "hidden" ? null : (
-        <p
-          className={`px-2 mt-0 mb-1 text-xs ${
-            props.error[props.name]
-              ? "text-red-600"
-              : props.message
-              ? "text-green-600"
-              : ""
-          }`}
-        >
-          {props.error[props.name] || props.message || null} &nbsp;
-        </p>
-      )}
-    </div>
+    </ControlLabel>
   );
 };
 

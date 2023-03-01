@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 
 const InputCode = ({
   setCode,
@@ -10,13 +10,14 @@ const InputCode = ({
 }: any) => {
   let inputElements: any[] = [];
   const sendCode = () => {
-    inputElements = [...document.querySelectorAll("input.code-input")];
+    const inputElements: any = Array.from(
+      document.querySelectorAll("input.code-input")
+    );
     const code = inputElements.map(({ value }) => value).join("");
     setCode(code.trim());
-    // console.log("code interno", code);
   };
   useEffect(() => {
-    inputElements = [...document.querySelectorAll("input.code-input")];
+    inputElements = Array.from(document.querySelectorAll("input.code-input"));
     inputElements.forEach((ele, index) => {
       ele.addEventListener("keydown", (e: any) => {
         if (e.keyCode === 8 && e.target.value === "")

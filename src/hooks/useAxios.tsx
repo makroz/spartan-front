@@ -19,7 +19,7 @@ const useAxios = (url: any = null, method = "GET", payload = {}) => {
     if (prevent && countAxios == 0) return;
     await execute(url, method, _payload, true);
   };
-  const execute = async (
+  const execute: any = async (
     _url: String = url,
     _method: String = method,
     payload: any = {},
@@ -32,6 +32,7 @@ const useAxios = (url: any = null, method = "GET", payload = {}) => {
     }
 
     let data = null;
+    let error = "";
     try {
       const response = await instance.request({
         signal: controllerRef.current.signal,
@@ -42,13 +43,17 @@ const useAxios = (url: any = null, method = "GET", payload = {}) => {
       if (Act) {
         setData(response.data);
       }
+
       data = response.data;
     } catch (err) {
-      setError((err as any).message);
+      //console.log("error", err);
+      error = (err as any).message;
+      setError(error);
     } finally {
       setLoaded(true);
       //if (payload.origen) console.log("payload.origen", payload.origen);
     }
+
     return { data, error, loaded };
   };
 

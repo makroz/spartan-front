@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import useAuth from "../../hooks/useAuth";
 import Sidebar from "./components/Sidebar";
 import Navbar from "./components/Navbar";
+import Toast from "../ui/Toast";
 
 const LayoutHorizontal = ({ children }) => {
   const { user, config }: any = useAuth();
@@ -27,7 +28,8 @@ const LayoutHorizontal = ({ children }) => {
 
   if (!user) return children;
   return (
-    <div className="flex flex-row min-h-screen h-full gap-0 w-full">
+    <div className="relative flex flex-row min-h-screen h-full gap-0 w-full">
+      <Toast />
       <div
         className={`${
           visible ? "w-[280px] min-w-[280px]" : "w-[40px] min-w-[40px]"

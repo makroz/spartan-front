@@ -45,10 +45,9 @@ const Subselect = (props) => {
   }, [props.value]);
 
   if (!props.options || !props.optionsSub) return null;
-  const clase = props.classDiv || "";
   const claser =
     "border border-solid border-gray-700 p-3" +
-    (props.classInput || "") +
+    (props.className || "") +
     " " +
     (props.rounded
       ? props.rounded === "l"
@@ -59,12 +58,12 @@ const Subselect = (props) => {
     <>
       <fieldset className={claser}>
         <legend className="px-2">{props.label}</legend>
-        <div className="flex flex-col ">
+        <div className="flex flex-col text-xs md:text-sm">
           {props.options.map((op: any, index) => {
             return (
               <div
                 key={op[props.optionValue] + "-" + index}
-                className="flex justify-between "
+                className="grid grid-cols-5 "
               >
                 <div className="flex-grow">{op[props.optionLabel]}</div>
                 {props.optionsSub.map((sub: any, inde) => {
@@ -125,17 +124,13 @@ const Subselect = (props) => {
                             val = val.substring(0, val.length - 1);
 
                           if (val == "|") val = "";
-                          // setSubState({
-                          //   ...subState,
-                          //   [name]: e.target.checked,
-                          // });
                           props.onChange({
                             target: { name: props.name, value: val },
                           });
                         }}
                       />
                       <label
-                        className="ml-2"
+                        className="ml-2 text-[10px] md:text-sm"
                         htmlFor={op[props.optionValue] + "-" + sub.value}
                       >
                         {sub.label}

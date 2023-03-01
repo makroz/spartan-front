@@ -32,6 +32,8 @@ const MainMenu = ({ config, onVisible, visible }: any) => {
                 }
                 onClick={(e) => {
                   menu[index].open = menu[index].open !== true;
+                  if (!visible) menu[index].open = true;
+                  onVisible(true);
                   setMenu([...menu]);
                 }}
               >

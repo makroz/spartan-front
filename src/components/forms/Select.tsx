@@ -1,16 +1,7 @@
-import React from "react";
+import ControlLabel from "./ControlLabel";
 
 const Select = (props: any) => {
   if (!props.options) return null;
-  const clase = props.classDiv || "";
-  const claser =
-    (props.classInput || "") +
-    " " +
-    (props.rounded
-      ? props.rounded === "l"
-        ? "rounded-l-lg"
-        : "rounded-r-lg"
-      : "rounded-lg");
   let valueText = "";
   if (props.readOnly) {
     if (props.options.filter) {
@@ -25,21 +16,13 @@ const Select = (props: any) => {
     }
   }
   return (
-    <div className={`input ${clase}`}>
-      <label
-        htmlFor={props.name}
-        className={`input-label block ${
-          props.required ? "text-black font-bold" : null
-        }`}
-      >
-        {props.label} {props.required ? "*" : null}
-      </label>
+    <ControlLabel {...props}>
       {props.readOnly ? (
         <input
           type="text"
           name={props.name}
           id={props.name}
-          className={claser}
+          className={props.className}
           required={props.required}
           disabled={true}
           readOnly={true}
@@ -49,7 +32,7 @@ const Select = (props: any) => {
         <select
           name={props.name}
           id={props.name}
-          className={`input-label w-full ${claser}`}
+          className={props.className}
           placeholder={props.placeholder || ""}
           required={props.required}
           onChange={props.onChange}
@@ -83,12 +66,7 @@ const Select = (props: any) => {
               ))}
         </select>
       )}
-      {props.error && (
-        <p className="px-2 mt-0 mb-1 text-xs text-red-600 dark:text-red-500">
-          {props.error[props.name] || null} &nbsp;
-        </p>
-      )}
-    </div>
+    </ControlLabel>
   );
 };
 

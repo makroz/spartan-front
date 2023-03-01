@@ -15,10 +15,17 @@ const DataForm = ({
   openDel,
 }) => {
   const handleChangeInput = (e) => {
-    setFormState({ ...formState, [e.target.name]: e.target.value });
-    if (columns[e.target.name].onChange) {
-      columns[e.target.name].onChange(e.target.value, formState, setFormState);
+    let value = e.target.value;
+    if (e.target.type == "checkbox") {
+      value = e.target.checked
+        ? columns[e.target.name].optionValue[0] || "Y"
+        : columns[e.target.name].optionValue[1] || "N";
     }
+    setFormState({ ...formState, [e.target.name]: value });
+    if (columns[e.target.name]?.onChange) {
+      columns[e.target.name].onChange(value, formState, setFormState);
+    }
+    //console.log("formState", e);
   };
 
   return (
@@ -38,6 +45,7 @@ const DataForm = ({
           handleChangeInput={handleChangeInput}
           action={action}
           errors={errorsForm}
+          open={openModal}
         />
       </DataModal>
       <DataModal

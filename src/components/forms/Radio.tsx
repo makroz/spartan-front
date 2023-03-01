@@ -1,32 +1,14 @@
-import React from "react";
+import ControlLabel from "./ControlLabel";
 
 const Radio = (props: any) => {
   if (!props.options) return null;
-  const clase = props.classDiv || "";
-  // const claser =
-  //   props.classNameInput +
-  //   " " +
-  //   (props.rounded
-  //     ? props.rounded === "l"
-  //       ? "rounded-l-lg"
-  //       : "rounded-r-lg"
-  //     : "rounded-lg");
-
   return (
-    <div className={`input ${clase}`}>
-      <label
-        htmlFor={props.name}
-        className={`input-label ${
-          props.required ? "text-black font-bold" : null
-        }`}
-      >
-        {props.label} {props.required ? "*" : null}
-      </label>
+    <ControlLabel {...props}>
       <div className="flex">
         {props.options.map((option: any) => (
           <div
             key={option.value}
-            className={` flex items-center mr-4 ${clase}`}
+            className={` flex items-center mr-4 ${props.classDiv}`}
           >
             <input
               name={props.name}
@@ -48,10 +30,7 @@ const Radio = (props: any) => {
           </div>
         ))}
       </div>
-      <p className="px-2 mt-0 mb-1 text-xs text-red-600">
-        {props.error[props.name] || null} &nbsp;
-      </p>
-    </div>
+    </ControlLabel>
   );
 };
 

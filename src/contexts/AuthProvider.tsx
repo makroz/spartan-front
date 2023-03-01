@@ -12,6 +12,7 @@ const AuthProvider = ({ children, noAuth = false, guard = null }: any): any => {
   const [guardia, setGuardia] = useState(guard);
   const [config, setConfig]: any = useState(conf);
   const [load, setLoad]: any = useState(false);
+  const [toast, setToast] = useState({ msg: "", type: "success", time: 3000 });
 
   const getConfig = () => {
     let currentConfig: any = conf;
@@ -103,7 +104,18 @@ const AuthProvider = ({ children, noAuth = false, guard = null }: any): any => {
   // console.log("====================================");
   return (
     <AuthContext.Provider
-      value={{ user, error, loaded, login, logout, config, guard, userCan }}
+      value={{
+        user,
+        error,
+        loaded,
+        login,
+        logout,
+        config,
+        guard,
+        userCan,
+        toast,
+        setToast,
+      }}
     >
       {loaded || <Spinner />}
       {!noAuth && !user ? <LoginBasic /> : children}

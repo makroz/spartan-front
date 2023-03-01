@@ -1,12 +1,13 @@
-import { log } from "console";
 import { useEffect, useState } from "react";
 import useAxios from "../hooks/useAxios";
+import useToast from "../hooks/useToast";
 import { getDefaultFormState } from "../utils/dbTools";
 import { capitalize } from "../utils/string";
 import t from "../utils/traductor";
 import DataForm from "./DataForm";
 import DataHeader from "./DataHeader";
 import DataTable from "./DataTable";
+
 import { checkRules } from "./validate/Rules";
 
 const DataCrud = ({
@@ -23,6 +24,7 @@ const DataCrud = ({
   datas = null,
   reload = null,
   searchType = "",
+  filter = false,
   searchFunc = null,
   // setAdvSearch = null,
   title = "",
@@ -35,6 +37,7 @@ const DataCrud = ({
   const [titleModal, setTitleModal] = useState("");
   const [action, setAction] = useState("view");
   const [actSearch, setActSearch] = useState([]);
+  const { showToast } = useToast();
 
   title = capitalize(t(title || modulo));
   const [params, setParams] = useState({
@@ -77,24 +80,33 @@ const DataCrud = ({
     setOpenDel(false);
   };
 
-  const onSave = () => {
+  const onSave = async () => {
     const errors = { ...checkRules(columns, action, formState) };
     setErrorsForm(errors);
     if (Object.keys(errors).length > 0) return;
     let payLoad = {};
+    let value: any = "";
     Object.keys(columns).map((key) => {
       if (columns[key].actions?.includes(action)) {
-        payLoad = { ...payLoad, [key]: formState[key] };
+        value = formState[key];
+        if (columns[key].inputType == "checkbox") {
+          value =
+            !value || value == "" ? columns[key].optionValue[1] || "N" : value;
+        }
+        payLoad = { ...payLoad, [key]: value };
       }
     });
     const url = "/" + modulo + (action != "add" ? "/" + formState["id"] : "");
-    let method = action == "edit" ? "PUT" : "POST";
-    if (action == "del") {
-      method = "DELETE";
+    let method = action == "edit" ? "PUT" : action == "add" ? "POST" : "DELETE";
+
+    const { data, error } = await execute(url, method, payLoad, false);
+    if (data?.success == true) {
+      onCloseModal();
+      reLoad({ ...params });
     }
-    execute(url, method, payLoad, false);
-    reLoad({ ...params });
-    onCloseModal();
+    //console.log("data", error);
+
+    showToast(data?.message || error, data?.success ? "success" : "error");
   };
 
   const onAdd = () => {
@@ -218,11 +230,13 @@ const DataCrud = ({
           msg={msg("head")}
           onAdd={onAdd}
           textBtnAdd={textBtnAdd}
-          title={title}
           loaded={loaded}
           setSearch={_setSearch}
           searchType={searchType}
           search={params.searchBy}
+          filter={filter}
+          params={filter ? { filter: {}, ...params } : { ...params }}
+          setParams={setParams}
         />
         {msg("middle")}
         {data?.data && (

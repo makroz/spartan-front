@@ -1,5 +1,3 @@
-import React from "react";
-
 const Check = (props: any) => {
   const clase = props.classDiv || "";
   return (
