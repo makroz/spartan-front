@@ -106,9 +106,9 @@ const companiesPage = () => {
   fields["state_id"].options = states?.data;
   fields["state_id"].onChange = setState;
   fields["city_id"].options = cities?.data;
-  fields["city_id"].render = (value, row, key, index) => row.city.name;
+  fields["city_id"].render = ({ row }) => row.city.name;
   fields["zip"].onBlur = onBlurZip;
-  fields["title"].render = (value, row, key, index) => {
+  fields["title"].render = ({ row }) => {
     return (
       <Avatar
         img=""

@@ -28,7 +28,7 @@ const usersPage = () => {
   fields["role_id"].options = roles?.data;
   fields["role_id"].optionLabel = "description";
 
-  fields["name"].render = (value, row, key, index) => {
+  fields["name"].render = ({ row }) => {
     return (
       <Avatar
         img=""

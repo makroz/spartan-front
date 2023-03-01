@@ -30,7 +30,7 @@ const dealerUsersPage = () => {
   fields["dealer_id"].options = data?.data;
   fields["dealer_id"].optionLabel = "title";
   fields["dealer_id"].actions = ["add", "view"];
-  fields["name"].render = (value, row, key, index) => {
+  fields["name"].render = ({ row }) => {
     return (
       <Avatar
         img=""
@@ -49,9 +49,8 @@ const dealerUsersPage = () => {
   };
   fields["name"].className =
     "whitespace-nowrap text-gray-900 dark:text-white  flex items-start";
-  fields["company_id"].render = (value, row, key, index) =>
-    row.dealer.company.title;
-  fields["_actions"].render = (value, row, index) => {
+  fields["company_id"].render = ({ row }) => row.dealer.company.title;
+  fields["_actions"].render = ({ value }) => {
     if (value == "view") return true;
     return false;
   };

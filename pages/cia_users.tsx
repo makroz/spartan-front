@@ -29,7 +29,7 @@ const ciaUsersPage = () => {
   fields["company_id"].options = data?.data;
   fields["company_id"].optionLabel = "title";
   fields["company_id"].actions = ["add", "view"];
-  fields["name"].render = (value, row, key, index) => {
+  fields["name"].render = ({ row }) => {
     return (
       <Avatar
         img=""
@@ -48,7 +48,7 @@ const ciaUsersPage = () => {
   };
   fields["name"].className =
     "whitespace-nowrap text-gray-900 dark:text-white  flex items-start";
-  fields["_actions"].render = (value, row, index) => {
+  fields["_actions"].render = ({ value }) => {
     if (value == "view") return true;
     return false;
   };

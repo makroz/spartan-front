@@ -29,7 +29,7 @@ const rolesPage = () => {
   fields["abilities"].optionValue = "name";
   fields["abilities"].optionLabel = "description";
   fields["abilities"].options = data?.data;
-  fields["_actions"].render = (value, row, index) => {
+  fields["_actions"].render = ({ row }) => {
     if (row?.id == 1) {
       return false;
     }
